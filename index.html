@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  Calculator, 
-  Target, 
-  Plus, 
-  Trash2, 
-  Award, 
-  TrendingUp, 
-  CheckCircle2, 
+import {
+  Calculator,
+  Target,
+  Plus,
+  Trash2,
+  Award,
+  TrendingUp,
+  CheckCircle2,
   AlertCircle,
-  FlaskConical, 
-  BookOpen, 
+  FlaskConical,
+  BookOpen,
   FileText,
   Zap,
   Cpu
@@ -18,11 +18,15 @@ import {
 const App = () => {
   const [activeTab, setActiveTab] = useState('theory');
 
+  // --- Regulation 2022 Standard Rounding ---
   const regRound = (x) => Math.round(x);
 
+  // --- State Management ---
   const [theoryMarks, setTheoryMarks] = useState({
-    i1Test: '', i1Assign: '',
-    i2Test: '', i2Assign: '',
+    i1Test: '',
+    i1Assign: '',
+    i2Test: '',
+    i2Assign: '',
   });
 
   const [labState, setLabState] = useState({
@@ -31,8 +35,11 @@ const App = () => {
     exptMarks: ['']
   });
 
-  const [subjects, setSubjects] = useState([{ id: 1, grade: '', credits: '' }]);
+  const [subjects, setSubjects] = useState([
+    { id: 1, grade: '', credits: '' }
+  ]);
 
+  // --- Input Handlers ---
   const handleNumExptsChange = (val) => {
     if (val === '') {
       setLabState(prev => ({ ...prev, numExpts: '' }));
@@ -40,15 +47,18 @@ const App = () => {
     }
     const n = parseInt(val);
     if (isNaN(n)) return;
+
     const targetN = Math.max(0, n);
     setLabState(prev => {
       const newMarks = [...prev.exptMarks];
       if (targetN >= 0) {
-        while (newMarks.length < targetN) newMarks.push('');
-        return { 
-          ...prev, 
-          numExpts: targetN, 
-          exptMarks: newMarks.slice(0, targetN) 
+        while (newMarks.length < targetN) {
+          newMarks.push('');
+        }
+        return {
+          ...prev,
+          numExpts: targetN,
+          exptMarks: newMarks.slice(0, targetN)
         };
       }
       return { ...prev, numExpts: targetN };
@@ -61,14 +71,21 @@ const App = () => {
     setLabState({ ...labState, exptMarks: newMarks });
   };
 
+  // --- Calculation Logic Engine ---
   const calcHub = useMemo(() => {
+    // Theory Processing
     const ass1 = (parseFloat(theoryMarks.i1Test) || 0) + (parseFloat(theoryMarks.i1Assign) || 0);
     const ass2 = (parseFloat(theoryMarks.i2Test) || 0) + (parseFloat(theoryMarks.i2Assign) || 0);
     const theoryAvg200 = (ass1 + ass2);
 
+    // Practical Processing
     const validExpts = labState.exptMarks.map(m => parseFloat(m) || 0);
-    const exptAvg = validExpts.length > 0 ? validExpts.reduce((a, b) => a + b, 0) / validExpts.length : 0;
+    const exptAvg = validExpts.length > 0 
+      ? validExpts.reduce((a, b) => a + b, 0) / validExpts.length 
+      : 0;
     const modelLab = parseFloat(labState.modelLab) || 0;
+    
+    // Cl. 13.2: Continuous Assessment (75%) + Model Lab (25%)
     const labBase100 = (exptAvg * 0.75) + (modelLab * 0.25);
 
     let totalInternal = 0;
@@ -78,17 +95,19 @@ const App = () => {
       totalInternal = regRound((theoryAvg200 / 200) * 40);
       maxInternal = 40;
     } else if (activeTab === 'integrated') {
+      // Integrated (50/50): 25 Theory + 25 Lab
       const tPart = (theoryAvg200 / 200) * 25;
       const pPart = (labBase100 / 100) * 25;
       totalInternal = regRound(tPart + pPart);
       maxInternal = 50;
     } else if (activeTab === 'lab') {
+      // Lab Only (60/40)
       totalInternal = regRound((labBase100 / 100) * 60);
       maxInternal = 60;
     }
 
     const maxESE = 100 - maxInternal;
-    const minESEReq = maxESE * 0.45;
+    const minESEReq = maxESE * 0.45; // 45% ESE Minimum (Cl. 15.1)
 
     const gradeThresholds = [
       { label: 'O', min: 91, gp: 10, color: 'text-[#00ff9f]' },
@@ -112,7 +131,8 @@ const App = () => {
   }, [activeTab, theoryMarks, labState]);
 
   const calculateSGPA = () => {
-    let pts = 0; let crs = 0;
+    let pts = 0;
+    let crs = 0;
     subjects.forEach(s => {
       pts += (parseFloat(s.grade) || 0) * (parseFloat(s.credits) || 0);
       crs += parseFloat(s.credits) || 0;
@@ -120,14 +140,26 @@ const App = () => {
     return crs > 0 ? (pts / crs).toFixed(2) : '0.00';
   };
 
+  // --- Reusable Navigation Component ---
   const NavButton = ({ id, label, icon: Icon }) => (
-    <button 
+    <button
       onClick={() => setActiveTab(id)}
-      className={`group relative flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 border ${activeTab === id ? 'bg-emerald-500/10 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-black/40 border-white/5 opacity-50 hover:opacity-100 hover:border-emerald-500/30'}`}
+      className={`
+        group relative flex flex-col items-center gap-2 p-4 rounded-xl 
+        transition-all duration-300 border
+        ${activeTab === id 
+          ? 'bg-emerald-500/10 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]' 
+          : 'bg-black/40 border-white/5 opacity-50 hover:opacity-100 hover:border-emerald-500/30'
+        }
+      `}
     >
       <Icon className={`w-5 h-5 ${activeTab === id ? 'text-[#00ff9f] drop-shadow-[0_0_8px_#00ff9f]' : 'text-slate-500'}`} />
-      <span className={`text-[8px] font-black uppercase tracking-[0.2em] ${activeTab === id ? 'text-[#00ff9f]' : 'text-slate-500'}`}>{label}</span>
-      {activeTab === id && <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-[2px] bg-[#00ff9f] shadow-[0_0_10px_#00ff9f]" />}
+      <span className={`text-[8px] font-black uppercase tracking-[0.2em] ${activeTab === id ? 'text-[#00ff9f]' : 'text-slate-500'}`}>
+        {label}
+      </span>
+      {activeTab === id && (
+        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-[2px] bg-[#00ff9f] shadow-[0_0_10px_#00ff9f]" />
+      )}
     </button>
   );
 
@@ -141,7 +173,8 @@ const App = () => {
         .neon-border { border: 1px solid rgba(0, 255, 159, 0.2); transition: all 0.3s ease; }
         .neon-border:focus-within { border-color: #00ff9f; box-shadow: 0 0 15px rgba(0, 255, 159, 0.3); }
         .scanline {
-          width: 100%; height: 100px; z-index: 99; background: linear-gradient(0deg, rgba(0, 255, 159, 0) 0%, rgba(0, 255, 159, 0.05) 50%, rgba(0, 255, 159, 0) 100%);
+          width: 100%; height: 100px; z-index: 99; 
+          background: linear-gradient(0deg, rgba(0, 255, 159, 0) 0%, rgba(0, 255, 159, 0.05) 50%, rgba(0, 255, 159, 0) 100%);
           opacity: 0.1; position: absolute; bottom: 100%; animation: scanline 8s linear infinite; pointer-events: none;
         }
         @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
@@ -161,12 +194,14 @@ const App = () => {
           </h1>
           <div className="flex items-center justify-center gap-4 mt-2">
             <div className="h-[1px] w-12 bg-emerald-500/30" />
-            <span className="text-[10px] font-black tracking-[0.6em] text-emerald-500/60 uppercase">System Active</span>
+            <span className="text-[10px] font-black tracking-[0.6em] text-emerald-500/60 uppercase">
+              System Active
+            </span>
             <div className="h-[1px] w-12 bg-emerald-500/30" />
           </div>
         </header>
 
-        {/* Cyber Nav */}
+        {/* Global Navigation */}
         <div className="grid grid-cols-4 gap-3 max-w-xl mx-auto">
           <NavButton id="theory" label="Theory" icon={BookOpen} />
           <NavButton id="integrated" label="Hybrid" icon={FlaskConical} />
@@ -175,23 +210,42 @@ const App = () => {
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8 items-start">
+          {/* Inputs Panel */}
           <div className="lg:col-span-7 space-y-6">
             {(activeTab === 'theory' || activeTab === 'integrated') && (
               <div className="grid sm:grid-cols-2 gap-4 animate-in slide-in-from-left-4 duration-500">
                 {[1, 2].map(num => (
                   <div key={num} className="p-6 bg-black/60 border border-emerald-900/40 rounded-sm relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-1"><Zap className="w-3 h-3 text-emerald-900/50" /></div>
+                    <div className="absolute top-0 right-0 p-1">
+                      <Zap className="w-3 h-3 text-emerald-900/50" />
+                    </div>
                     <div className="text-[10px] font-black text-[#00ff9f]/80 uppercase tracking-widest mb-6 flex items-center gap-2">
                       <div className="w-2 h-2 bg-[#00ff9f] animate-pulse" /> ASSESSMENT 0{num}
                     </div>
                     <div className="space-y-5">
                       <div className="space-y-2">
-                        <label className="text-[8px] font-black text-emerald-700 uppercase ml-1">TEST [60 MAX]</label>
-                        <input type="number" value={theoryMarks[`i${num}Test`]} onChange={(e) => setTheoryMarks({...theoryMarks, [`i${num}Test`]: e.target.value})} className="w-full bg-black border border-emerald-900/50 rounded-none px-4 py-3 text-sm font-bold text-[#00ff9f] focus:border-[#00ff9f] outline-none transition-all placeholder:text-emerald-900" placeholder="00" />
+                        <label className="text-[8px] font-black text-emerald-700 uppercase ml-1">
+                          TEST [60 MAX]
+                        </label>
+                        <input
+                          type="number"
+                          value={theoryMarks[`i${num}Test`]}
+                          onChange={(e) => setTheoryMarks({ ...theoryMarks, [`i${num}Test`]: e.target.value })}
+                          className="w-full bg-black border border-emerald-900/50 rounded-none px-4 py-3 text-sm font-bold text-[#00ff9f] focus:border-[#00ff9f] outline-none transition-all placeholder:text-emerald-900"
+                          placeholder="00"
+                        />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[8px] font-black text-emerald-700 uppercase ml-1">ASSIGN [40 MAX]</label>
-                        <input type="number" value={theoryMarks[`i${num}Assign`]} onChange={(e) => setTheoryMarks({...theoryMarks, [`i${num}Assign`]: e.target.value})} className="w-full bg-black border border-emerald-900/50 rounded-none px-4 py-3 text-sm font-bold text-[#00ff9f] focus:border-[#00ff9f] outline-none transition-all placeholder:text-emerald-900" placeholder="00" />
+                        <label className="text-[8px] font-black text-emerald-700 uppercase ml-1">
+                          ASSIGN [40 MAX]
+                        </label>
+                        <input
+                          type="number"
+                          value={theoryMarks[`i${num}Assign`]}
+                          onChange={(e) => setTheoryMarks({ ...theoryMarks, [`i${num}Assign`]: e.target.value })}
+                          className="w-full bg-black border border-emerald-900/50 rounded-none px-4 py-3 text-sm font-bold text-[#00ff9f] focus:border-[#00ff9f] outline-none transition-all placeholder:text-emerald-900"
+                          placeholder="00"
+                        />
                       </div>
                     </div>
                   </div>
@@ -207,11 +261,11 @@ const App = () => {
                   </div>
                   <div className="flex items-center gap-3 bg-black border border-emerald-900/50 px-4 py-2">
                     <span className="text-[8px] font-black text-emerald-700 uppercase">Count</span>
-                    <input 
-                      type="number" 
-                      value={labState.numExpts} 
-                      onChange={(e) => handleNumExptsChange(e.target.value)} 
-                      className="w-8 bg-transparent text-[10px] font-black text-[#00ff9f] text-center outline-none border-b border-emerald-900/50" 
+                    <input
+                      type="number"
+                      value={labState.numExpts}
+                      onChange={(e) => handleNumExptsChange(e.target.value)}
+                      className="w-8 bg-transparent text-[10px] font-black text-[#00ff9f] text-center outline-none border-b border-emerald-900/50"
                       placeholder="--"
                     />
                   </div>
@@ -219,15 +273,29 @@ const App = () => {
                 
                 <div className="space-y-8">
                   <div className="space-y-2">
-                    <label className="text-[8px] font-black text-emerald-700 uppercase ml-1">MODEL LAB EXAM [100]</label>
-                    <input type="number" value={labState.modelLab} onChange={(e) => setLabState({...labState, modelLab: e.target.value})} className="w-full bg-black border border-emerald-900/50 rounded-none px-4 py-3 text-sm font-bold text-[#00ff9f] focus:border-[#00ff9f] outline-none transition-all" placeholder="00" />
+                    <label className="text-[8px] font-black text-emerald-700 uppercase ml-1">
+                      MODEL LAB EXAM [100]
+                    </label>
+                    <input
+                      type="number"
+                      value={labState.modelLab}
+                      onChange={(e) => setLabState({ ...labState, modelLab: e.target.value })}
+                      className="w-full bg-black border border-emerald-900/50 rounded-none px-4 py-3 text-sm font-bold text-[#00ff9f] focus:border-[#00ff9f] outline-none transition-all"
+                      placeholder="00"
+                    />
                   </div>
 
                   <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
                     {labState.exptMarks.map((mark, i) => (
                       <div key={i} className="flex flex-col gap-1">
-                        <span className="text-[7px] text-emerald-900 font-black text-center italic">E {i+1}</span>
-                        <input type="number" value={mark} onChange={(e) => updateExptMark(i, e.target.value)} className="w-full bg-black border border-emerald-900/30 rounded-none p-2 text-center text-xs font-bold text-[#00ff9f] focus:border-[#00ff9f]/50 outline-none transition-all" placeholder="0" />
+                        <span className="text-[7px] text-emerald-900 font-black text-center italic">E {i + 1}</span>
+                        <input
+                          type="number"
+                          value={mark}
+                          onChange={(e) => updateExptMark(i, e.target.value)}
+                          className="w-full bg-black border border-emerald-900/30 rounded-none p-2 text-center text-xs font-bold text-[#00ff9f] focus:border-[#00ff9f]/50 outline-none transition-all"
+                          placeholder="0"
+                        />
                       </div>
                     ))}
                   </div>
@@ -241,15 +309,37 @@ const App = () => {
                    <div className="text-[10px] font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2">
                      <div className="w-2 h-2 bg-emerald-400" /> SGPA CORE PROCESSOR
                    </div>
-                   <button onClick={() => setSubjects([...subjects, { id: Date.now(), grade: '', credits: '' }])} className="p-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 transition-all"><Plus className="w-5 h-5" /></button>
+                   <button
+                     onClick={() => setSubjects([...subjects, { id: Date.now(), grade: '', credits: '' }])}
+                     className="p-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 transition-all"
+                   >
+                     <Plus className="w-5 h-5" />
+                   </button>
                 </div>
                 <div className="space-y-3 max-h-[350px] overflow-y-auto pr-3 custom-scrollbar">
                   {subjects.map((s, idx) => (
                     <div key={s.id} className="flex items-center gap-4">
-                      <span className="text-[10px] font-black text-emerald-900 w-6 italic">ID {idx+1}</span>
-                      <input type="number" placeholder="GP" value={s.grade} onChange={(e) => setSubjects(subjects.map(item => item.id === s.id ? {...item, grade: e.target.value} : item))} className="flex-1 bg-black border border-emerald-900/50 rounded-none px-5 py-3 text-sm font-bold text-[#00ff9f] outline-none focus:border-[#00ff9f]" />
-                      <input type="number" placeholder="CR" value={s.credits} onChange={(e) => setSubjects(subjects.map(item => item.id === s.id ? {...item, credits: e.target.value} : item))} className="w-24 bg-black border border-emerald-900/50 rounded-none px-5 py-3 text-sm font-bold text-[#00ff9f] outline-none focus:border-[#00ff9f]" />
-                      <button onClick={() => setSubjects(subjects.filter(item => item.id !== s.id))} className="text-emerald-900 hover:text-rose-500 transition-colors p-2"><Trash2 className="w-4 h-4" /></button>
+                      <span className="text-[10px] font-black text-emerald-900 w-6 italic">ID {idx + 1}</span>
+                      <input
+                        type="number"
+                        placeholder="GP"
+                        value={s.grade}
+                        onChange={(e) => setSubjects(subjects.map(item => item.id === s.id ? { ...item, grade: e.target.value } : item))}
+                        className="flex-1 bg-black border border-emerald-900/50 rounded-none px-5 py-3 text-sm font-bold text-[#00ff9f] outline-none focus:border-[#00ff9f]"
+                      />
+                      <input
+                        type="number"
+                        placeholder="CR"
+                        value={s.credits}
+                        onChange={(e) => setSubjects(subjects.map(item => item.id === s.id ? { ...item, credits: e.target.value } : item))}
+                        className="w-24 bg-black border border-emerald-900/50 rounded-none px-5 py-3 text-sm font-bold text-[#00ff9f] outline-none focus:border-[#00ff9f]"
+                      />
+                      <button
+                        onClick={() => setSubjects(subjects.filter(item => item.id !== s.id))}
+                        className="text-emerald-900 hover:text-rose-500 transition-colors p-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -257,6 +347,7 @@ const App = () => {
             )}
           </div>
 
+          {/* Results Output Panel */}
           <div className="lg:col-span-5 animate-in fade-in duration-700">
             <div className="p-10 bg-black/80 border border-[#00ff9f]/20 rounded-none shadow-[0_0_30px_rgba(0,255,159,0.1)] relative overflow-hidden backdrop-blur-xl group hover:border-[#00ff9f]/40 transition-all flex flex-col justify-center min-h-[450px]">
                <div className="absolute top-0 left-0 w-2 h-2 bg-[#00ff9f]" />
@@ -271,7 +362,9 @@ const App = () => {
                        <div className="w-1 h-1 bg-emerald-700" /> ANALYZING INTERNAL DATA
                      </div>
                      <div className="flex items-baseline justify-center md:justify-start gap-3">
-                       <span className="text-8xl font-black text-[#00ff9f] drop-shadow-[0_0_15px_rgba(0,255,159,0.3)] tracking-tighter leading-none">{calcHub.totalInternal}</span>
+                       <span className="text-8xl font-black text-[#00ff9f] drop-shadow-[0_0_15px_rgba(0,255,159,0.3)] tracking-tighter leading-none">
+                         {calcHub.totalInternal}
+                       </span>
                        <span className="text-3xl font-black text-emerald-900">/ {calcHub.maxInternal}</span>
                      </div>
                    </div>
@@ -282,14 +375,20 @@ const App = () => {
                            <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">MIN PASS ESE</span>
                            <span className="text-[7px] text-emerald-900 font-bold uppercase tracking-widest">Incl. 45% Rule</span>
                          </div>
-                         <span className="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] leading-none">{calcHub.passSem100 <= 0 ? 'SECURED' : calcHub.passSem100.toFixed(2)}</span>
+                         <span className="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] leading-none">
+                           {calcHub.passSem100 <= 0 ? 'SECURED' : calcHub.passSem100.toFixed(2)}
+                         </span>
                       </div>
                       
                       <div className="grid gap-2">
                          {calcHub.predictions.map(p => (
                            <div key={p.label} className="flex items-center justify-between px-5 py-4 bg-emerald-950/10 border border-emerald-900/20 hover:border-[#00ff9f]/30 transition-all group/row">
-                              <span className={`text-2xl font-black ${p.color} group-hover/row:drop-shadow-[0_0_8px_currentColor]`}>{p.label}</span>
-                              <span className="text-lg font-black text-white/90">{p.sem100 <= 0 ? 'SECURED' : p.sem100 > 100 ? 'FAILED' : p.sem100.toFixed(2)}</span>
+                              <span className={`text-2xl font-black ${p.color} group-hover/row:drop-shadow-[0_0_8px_currentColor]`}>
+                                {p.label}
+                              </span>
+                              <span className="text-lg font-black text-white/90">
+                                {p.sem100 <= 0 ? 'SECURED' : p.sem100 > 100 ? 'FAILED' : p.sem100.toFixed(2)}
+                              </span>
                            </div>
                          ))}
                       </div>
@@ -297,7 +396,9 @@ const App = () => {
                  </div>
                ) : (
                  <div className="text-center py-4 relative overflow-visible px-4">
-                   <div className="text-[10px] font-black text-[#00ff9f] uppercase tracking-[0.6em] mb-12 italic opacity-50">COMPUTED SGPA OUTPUT</div>
+                   <div className="text-[10px] font-black text-[#00ff9f] uppercase tracking-[0.6em] mb-12 italic opacity-50">
+                     COMPUTED SGPA OUTPUT
+                   </div>
                    <div className="text-7xl md:text-8xl font-black text-white leading-none tracking-tighter drop-shadow-[0_0_30px_rgba(0,255,159,0.3)] skew-x-[-15deg] break-words">
                     {calculateSGPA()}
                    </div>
