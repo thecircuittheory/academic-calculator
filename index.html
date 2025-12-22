@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GRADE PILOT | CYBERPUNK EDITION</title>
   
-  <!-- Fonts: Orbitron for that sci-fi tech feel -->
+  <!-- Fonts: Orbitron for that high-tech sci-fi aesthetic -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
       background-color: var(--bg-black);
       color: #cbd5e1;
       font-family: 'Orbitron', sans-serif;
-      min-height: 100-vh;
+      min-height: 100vh; /* Fixed typo from 100-vh */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -132,7 +132,7 @@
     /* --- Navigation --- */
     nav {
       display: grid;
-      grid-template-cols: repeat(4, 1fr);
+      grid-template-columns: repeat(4, 1fr); /* Fixed typo from grid-template-cols */
       gap: 0.75rem;
       max-width: 600px;
       margin: 0 auto 2.5rem;
@@ -201,13 +201,13 @@
     /* --- Main UI Content --- */
     .dashboard {
       display: grid;
-      grid-template-cols: 1fr;
+      grid-template-columns: 1fr; /* Fixed typo from grid-template-cols */
       gap: 2rem;
     }
 
     @media (min-width: 1024px) {
       .dashboard {
-        grid-template-cols: 7fr 5fr;
+        grid-template-columns: 7fr 5fr; /* Fixed typo from grid-template-cols */
       }
     }
 
@@ -220,13 +220,13 @@
 
     .input-grid {
       display: grid;
-      grid-template-cols: 1fr;
+      grid-template-columns: 1fr; /* Fixed typo from grid-template-cols */
       gap: 1rem;
     }
 
     @media (min-width: 640px) {
       .input-grid {
-        grid-template-cols: 1fr 1fr;
+        grid-template-columns: 1fr 1fr; /* Fixed typo from grid-template-cols */
       }
     }
 
@@ -332,7 +332,7 @@
 
     .experiment-grid {
       display: grid;
-      grid-template-cols: repeat(auto-fill, minmax(60px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Fixed typo from grid-template-cols */
       gap: 0.5rem;
       max-height: 200px;
       overflow-y: auto;
@@ -380,6 +380,7 @@
       min-height: 450px;
       backdrop-filter: blur(20px);
       box-shadow: 0 0 30px rgba(0, 255, 159, 0.1);
+      position: relative;
     }
 
     /* Corner brackets */
