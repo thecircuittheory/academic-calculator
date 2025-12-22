@@ -1,419 +1,1017 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import {
-  Calculator,
-  Target,
-  Plus,
-  Trash2,
-  Award,
-  TrendingUp,
-  CheckCircle2,
-  AlertCircle,
-  FlaskConical,
-  BookOpen,
-  FileText,
-  Zap,
-  Cpu
-} from 'lucide-react';
-
-const App = () => {
-  const [activeTab, setActiveTab] = useState('theory');
-
-  // --- Regulation 2022 Standard Rounding ---
-  const regRound = (x) => Math.round(x);
-
-  // --- State Management ---
-  const [theoryMarks, setTheoryMarks] = useState({
-    i1Test: '',
-    i1Assign: '',
-    i2Test: '',
-    i2Assign: '',
-  });
-
-  const [labState, setLabState] = useState({
-    modelLab: '',
-    numExpts: 1,
-    exptMarks: ['']
-  });
-
-  const [subjects, setSubjects] = useState([
-    { id: 1, grade: '', credits: '' }
-  ]);
-
-  // --- Input Handlers ---
-  const handleNumExptsChange = (val) => {
-    if (val === '') {
-      setLabState(prev => ({ ...prev, numExpts: '' }));
-      return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRADE PILOT | CYBERPUNK EDITION</title>
+  
+  <!-- Fonts: Orbitron for that sci-fi tech feel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --neon-green: #00ff9f;
+      --matrix-green: #39ff14;
+      --dark-green: #00e676;
+      --bg-black: #020203;
+      --panel-bg: rgba(0, 0, 0, 0.8);
+      --border-glow: rgba(0, 255, 159, 0.2);
+      --border-accent: rgba(0, 255, 159, 0.5);
     }
-    const n = parseInt(val);
-    if (isNaN(n)) return;
 
-    const targetN = Math.max(0, n);
-    setLabState(prev => {
-      const newMarks = [...prev.exptMarks];
-      if (targetN >= 0) {
-        while (newMarks.length < targetN) {
-          newMarks.push('');
-        }
-        return {
-          ...prev,
-          numExpts: targetN,
-          exptMarks: newMarks.slice(0, targetN)
-        };
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: #cbd5e1;
+      font-family: 'Orbitron', sans-serif;
+      min-height: 100-vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* --- Cyber Background & Scanlines --- */
+    .grid-background {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image: 
+        linear-gradient(rgba(0, 255, 159, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 159, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .radial-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 50%, rgba(0, 255, 159, 0.05) 0%, transparent 70%);
+    }
+
+    .scanline {
+      width: 100%;
+      height: 100px;
+      z-index: 99;
+      background: linear-gradient(0deg, transparent 0%, rgba(0, 255, 159, 0.05) 50%, transparent 100%);
+      opacity: 0.1;
+      position: fixed;
+      bottom: 100%;
+      animation: scanline 8s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scanline {
+      0% { bottom: 100%; }
+      100% { bottom: -100px; }
+    }
+
+    /* --- Layout Elements --- */
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      position: relative;
+      z-index: 10;
+      animation: fadeIn 0.7s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: -0.05em;
+      color: var(--neon-green);
+      text-shadow: 0 0 15px rgba(0, 255, 159, 0.5);
+      transform: skewX(-10deg);
+    }
+
+    .system-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .status-line {
+      height: 1px;
+      width: 3rem;
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .status-text {
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.6em;
+      color: rgba(16, 185, 129, 0.6);
+    }
+
+    /* --- Navigation --- */
+    nav {
+      display: grid;
+      grid-template-cols: repeat(4, 1fr);
+      gap: 0.75rem;
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .nav-btn {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1rem;
+      color: #64748b;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .nav-btn svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-btn span {
+      font-size: 8px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    .nav-btn:hover {
+      opacity: 1;
+      border-color: rgba(0, 255, 159, 0.3);
+    }
+
+    .nav-btn.active {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: var(--neon-green);
+      color: var(--neon-green);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .nav-btn.active svg {
+      filter: drop-shadow(0 0 8px var(--neon-green));
+    }
+
+    .nav-indicator {
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1rem;
+      height: 2px;
+      background: var(--neon-green);
+      box-shadow: 0 0 10px var(--neon-green);
+      display: none;
+    }
+
+    .nav-btn.active .nav-indicator {
+      display: block;
+    }
+
+    /* --- Main UI Content --- */
+    .dashboard {
+      display: grid;
+      grid-template-cols: 1fr;
+      gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard {
+        grid-template-cols: 7fr 5fr;
       }
-      return { ...prev, numExpts: targetN };
-    });
-  };
-
-  const updateExptMark = (index, val) => {
-    const newMarks = [...labState.exptMarks];
-    newMarks[index] = val;
-    setLabState({ ...labState, exptMarks: newMarks });
-  };
-
-  // --- Calculation Logic Engine ---
-  const calcHub = useMemo(() => {
-    // Theory Processing
-    const ass1 = (parseFloat(theoryMarks.i1Test) || 0) + (parseFloat(theoryMarks.i1Assign) || 0);
-    const ass2 = (parseFloat(theoryMarks.i2Test) || 0) + (parseFloat(theoryMarks.i2Assign) || 0);
-    const theoryAvg200 = (ass1 + ass2);
-
-    // Practical Processing
-    const validExpts = labState.exptMarks.map(m => parseFloat(m) || 0);
-    const exptAvg = validExpts.length > 0 
-      ? validExpts.reduce((a, b) => a + b, 0) / validExpts.length 
-      : 0;
-    const modelLab = parseFloat(labState.modelLab) || 0;
-    
-    // Cl. 13.2: Continuous Assessment (75%) + Model Lab (25%)
-    const labBase100 = (exptAvg * 0.75) + (modelLab * 0.25);
-
-    let totalInternal = 0;
-    let maxInternal = 40;
-
-    if (activeTab === 'theory') {
-      totalInternal = regRound((theoryAvg200 / 200) * 40);
-      maxInternal = 40;
-    } else if (activeTab === 'integrated') {
-      // Integrated (50/50): 25 Theory + 25 Lab
-      const tPart = (theoryAvg200 / 200) * 25;
-      const pPart = (labBase100 / 100) * 25;
-      totalInternal = regRound(tPart + pPart);
-      maxInternal = 50;
-    } else if (activeTab === 'lab') {
-      // Lab Only (60/40)
-      totalInternal = regRound((labBase100 / 100) * 60);
-      maxInternal = 60;
     }
 
-    const maxESE = 100 - maxInternal;
-    const minESEReq = maxESE * 0.45; // 45% ESE Minimum (Cl. 15.1)
+    .panel {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 255, 159, 0.15);
+      padding: 1.5rem;
+      position: relative;
+    }
 
-    const gradeThresholds = [
-      { label: 'O', min: 91, gp: 10, color: 'text-[#00ff9f]' },
-      { label: 'A+', min: 81, gp: 9, color: 'text-[#39ff14]' },
-      { label: 'A', min: 71, gp: 8, color: 'text-[#00e676]' },
-      { label: 'B+', min: 61, gp: 7, color: 'text-emerald-400' },
-      { label: 'B', min: 56, gp: 6, color: 'text-green-500' },
-      { label: 'C', min: 50, gp: 5, color: 'text-slate-500' },
-    ];
+    .input-grid {
+      display: grid;
+      grid-template-cols: 1fr;
+      gap: 1rem;
+    }
 
-    const predictions = gradeThresholds.map(g => {
-      const needFromESE = Math.max(minESEReq, g.min - totalInternal);
-      const sem100 = (needFromESE / maxESE) * 100;
-      return { ...g, sem100 };
-    });
+    @media (min-width: 640px) {
+      .input-grid {
+        grid-template-cols: 1fr 1fr;
+      }
+    }
 
-    const passNeedESE = Math.max(minESEReq, 50 - totalInternal);
-    const passSem100 = (passNeedESE / maxESE) * 100;
+    .assessment-card {
+      padding: 1.5rem;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      background: rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
 
-    return { totalInternal, maxInternal, predictions, passSem100 };
-  }, [activeTab, theoryMarks, labState]);
+    .card-title {
+      font-size: 10px;
+      font-weight: 900;
+      color: rgba(0, 255, 159, 0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-  const calculateSGPA = () => {
-    let pts = 0;
-    let crs = 0;
-    subjects.forEach(s => {
-      pts += (parseFloat(s.grade) || 0) * (parseFloat(s.credits) || 0);
-      crs += parseFloat(s.credits) || 0;
-    });
-    return crs > 0 ? (pts / crs).toFixed(2) : '0.00';
-  };
+    .title-pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--neon-green);
+      animation: pulse 2s infinite;
+    }
 
-  // --- Reusable Navigation Component ---
-  const NavButton = ({ id, label, icon: Icon }) => (
-    <button
-      onClick={() => setActiveTab(id)}
-      className={`
-        group relative flex flex-col items-center gap-2 p-4 rounded-xl 
-        transition-all duration-300 border
-        ${activeTab === id 
-          ? 'bg-emerald-500/10 border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]' 
-          : 'bg-black/40 border-white/5 opacity-50 hover:opacity-100 hover:border-emerald-500/30'
-        }
-      `}
-    >
-      <Icon className={`w-5 h-5 ${activeTab === id ? 'text-[#00ff9f] drop-shadow-[0_0_8px_#00ff9f]' : 'text-slate-500'}`} />
-      <span className={`text-[8px] font-black uppercase tracking-[0.2em] ${activeTab === id ? 'text-[#00ff9f]' : 'text-slate-500'}`}>
-        {label}
-      </span>
-      {activeTab === id && (
-        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-[2px] bg-[#00ff9f] shadow-[0_0_10px_#00ff9f]" />
-      )}
-    </button>
-  );
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
 
-  return (
-    <div className="min-h-screen bg-[#020203] text-slate-300 flex flex-col items-center justify-center p-6 selection:bg-[#00ff9f]/30 overflow-x-hidden">
-      <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        body { font-family: 'Orbitron', sans-serif; }
-        .custom-scrollbar::-webkit-scrollbar { width: 2px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #00ff9f; box-shadow: 0 0 10px #00ff9f; }
-        .neon-border { border: 1px solid rgba(0, 255, 159, 0.2); transition: all 0.3s ease; }
-        .neon-border:focus-within { border-color: #00ff9f; box-shadow: 0 0 15px rgba(0, 255, 159, 0.3); }
-        .scanline {
-          width: 100%; height: 100px; z-index: 99; 
-          background: linear-gradient(0deg, rgba(0, 255, 159, 0) 0%, rgba(0, 255, 159, 0.05) 50%, rgba(0, 255, 159, 0) 100%);
-          opacity: 0.1; position: absolute; bottom: 100%; animation: scanline 8s linear infinite; pointer-events: none;
-        }
-        @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
-      ` }} />
+    .input-field {
+      margin-bottom: 1.25rem;
+    }
 
-      {/* Cyber Background Decor */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,159,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,159,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(0,255,159,0.05)_0%,_transparent:70%)]" />
-        <div className="scanline" />
+    .input-field label {
+      display: block;
+      font-size: 8px;
+      font-weight: 900;
+      color: #065f46;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-field input {
+      width: 100%;
+      background: black;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.75rem 1rem;
+      color: var(--neon-green);
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.875rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-field input:focus {
+      border-color: var(--neon-green);
+      box-shadow: 0 0 10px rgba(0, 255, 159, 0.2);
+    }
+
+    /* --- Practical Panel --- */
+    .lab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+      padding-bottom: 1rem;
+    }
+
+    .count-selector {
+      background: black;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .count-selector span {
+      font-size: 8px;
+      font-weight: 900;
+      color: #065f46;
+    }
+
+    .count-selector input {
+      width: 2.5rem;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--neon-green);
+      text-align: center;
+      font-family: inherit;
+      font-weight: 900;
+      font-size: 10px;
+      outline: none;
+    }
+
+    .experiment-grid {
+      display: grid;
+      grid-template-cols: repeat(auto-fill, minmax(60px, 1fr));
+      gap: 0.5rem;
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .experiment-input {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .experiment-input span {
+      font-size: 7px;
+      font-weight: 900;
+      color: #064e3b;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .experiment-input input {
+      background: black;
+      border: 1px solid rgba(16, 185, 129, 0.1);
+      padding: 0.5rem;
+      text-align: center;
+      color: var(--neon-green);
+      font-size: 10px;
+      font-weight: 700;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .experiment-input input:focus {
+      border-color: rgba(0, 255, 159, 0.5);
+    }
+
+    /* --- Results Display --- */
+    .results-panel {
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(0, 255, 159, 0.2);
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 450px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 30px rgba(0, 255, 159, 0.1);
+    }
+
+    /* Corner brackets */
+    .bracket {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--neon-green);
+    }
+    .top-l { top: 0; left: 0; }
+    .top-r { top: 0; right: 0; }
+    .bot-l { bottom: 0; left: 0; }
+    .bot-r { bottom: 0; right: 0; }
+
+    .internal-status {
+      margin-bottom: 2.5rem;
+    }
+
+    .status-label {
+      font-size: 9px;
+      font-weight: 900;
+      color: #064e3b;
+      letter-spacing: 0.4em;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-dot {
+      width: 4px;
+      height: 4px;
+      background: #064e3b;
+    }
+
+    .internal-score {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .score-big {
+      font-size: 5rem;
+      font-weight: 900;
+      color: var(--neon-green);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      filter: drop-shadow(0 0 15px rgba(0, 255, 159, 0.3));
+    }
+
+    .score-max {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #064e3b;
+    }
+
+    .pass-target-box {
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .pass-label-stack {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pass-label {
+      font-size: 9px;
+      font-weight: 900;
+      color: var(--matrix-green);
+      letter-spacing: 0.2em;
+    }
+
+    .rule-tag {
+      font-size: 7px;
+      font-weight: 700;
+      color: #064e3b;
+      text-transform: uppercase;
+    }
+
+    .pass-value {
+      font-size: 2rem;
+      font-weight: 900;
+      color: white;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    .grade-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      background: rgba(16, 185, 129, 0.03);
+      border: 1px solid rgba(16, 185, 129, 0.1);
+      margin-top: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .grade-row:hover {
+      border-color: rgba(0, 255, 159, 0.3);
+    }
+
+    .grade-label {
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+
+    .grade-req {
+      font-size: 1.125rem;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* --- SGPA Hub --- */
+    .sgpa-processor {
+      padding: 2rem;
+    }
+
+    .hub-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+      padding-bottom: 1rem;
+    }
+
+    .hub-title {
+      font-size: 10px;
+      font-weight: 900;
+      color: var(--matrix-green);
+      letter-spacing: 0.2em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hub-title .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--matrix-green);
+    }
+
+    .add-btn {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--matrix-green);
+      padding: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .add-btn:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .subjects-list {
+      max-height: 350px;
+      overflow-y: auto;
+      padding-right: 0.75rem;
+    }
+
+    .subject-entry {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .entry-id {
+      font-size: 10px;
+      font-weight: 900;
+      color: #064e3b;
+      font-style: italic;
+      width: 1.5rem;
+    }
+
+    .subject-input {
+      flex: 1;
+      background: black;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.75rem 1.25rem;
+      color: var(--neon-green);
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .subject-input.short {
+      width: 5rem;
+      flex: none;
+    }
+
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: #064e3b;
+      cursor: pointer;
+      padding: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .remove-btn:hover {
+      color: #ef4444;
+    }
+
+    .sgpa-output-container {
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .output-label {
+      font-size: 10px;
+      font-weight: 900;
+      color: var(--neon-green);
+      letter-spacing: 0.6em;
+      margin-bottom: 3rem;
+      opacity: 0.5;
+      font-style: italic;
+    }
+
+    .sgpa-display {
+      font-size: 6rem;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      transform: skewX(-15deg);
+      filter: drop-shadow(0 0 40px rgba(0, 255, 159, 0.2));
+    }
+
+    @media (max-width: 640px) {
+      .sgpa-display {
+        font-size: 4rem;
+      }
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: #064e3b;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.8em;
+      text-transform: uppercase;
+      padding-bottom: 3rem;
+    }
+
+    /* Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar { width: 2px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--neon-green); }
+
+    /* --- Hidden State Logic --- */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <div class="grid-background"></div>
+  <div class="radial-glow"></div>
+  <div class="scanline"></div>
+
+  <div class="container">
+    <header>
+      <h1>GRADE PILOT</h1>
+      <div class="system-status">
+        <div class="status-line"></div>
+        <div class="status-text">System Active</div>
+        <div class="status-line"></div>
       </div>
+    </header>
 
-      <div className="relative z-10 w-full max-w-4xl space-y-8 animate-in fade-in duration-700">
-        <header className="text-center relative">
-          <h1 className="text-6xl md:text-7xl font-black italic tracking-tighter text-[#00ff9f] drop-shadow-[0_0_15px_rgba(0,255,159,0.5)] skew-x-[-10deg]">
-            GRADE PILOT
-          </h1>
-          <div className="flex items-center justify-center gap-4 mt-2">
-            <div className="h-[1px] w-12 bg-emerald-500/30" />
-            <span className="text-[10px] font-black tracking-[0.6em] text-emerald-500/60 uppercase">
-              System Active
-            </span>
-            <div className="h-[1px] w-12 bg-emerald-500/30" />
+    <nav>
+      <button class="nav-btn active" data-tab="theory">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18 18.246 18.477 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        <span>Theory</span>
+        <div class="nav-indicator"></div>
+      </button>
+      <button class="nav-btn" data-tab="integrated">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+        <span>Hybrid</span>
+        <div class="nav-indicator"></div>
+      </button>
+      <button class="nav-btn" data-tab="lab">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <span>Practical</span>
+        <div class="nav-indicator"></div>
+      </button>
+      <button class="nav-btn" data-tab="sgpa">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+        <span>SGPA</span>
+        <div class="nav-indicator"></div>
+      </button>
+    </nav>
+
+    <div class="dashboard">
+      
+      <!-- Inputs Section -->
+      <section id="inputs-panel" class="lg:col-span-7">
+        
+        <!-- Theory/Integrated Assessment Component -->
+        <div id="theory-inputs" class="input-grid">
+          <div class="assessment-card">
+            <div class="card-title"><div class="title-pulse"></div> Assessment 01</div>
+            <div class="input-field">
+              <label>Test [60 Max]</label>
+              <input type="number" id="i1Test" placeholder="00">
+            </div>
+            <div class="input-field">
+              <label>Assign [40 Max]</label>
+              <input type="number" id="i1Assign" placeholder="00">
+            </div>
           </div>
-        </header>
-
-        {/* Global Navigation */}
-        <div className="grid grid-cols-4 gap-3 max-w-xl mx-auto">
-          <NavButton id="theory" label="Theory" icon={BookOpen} />
-          <NavButton id="integrated" label="Hybrid" icon={FlaskConical} />
-          <NavButton id="lab" label="Practical" icon={FileText} />
-          <NavButton id="sgpa" label="SGPA" icon={Cpu} />
-        </div>
-
-        <div className="grid lg:grid-cols-12 gap-8 items-start">
-          {/* Inputs Panel */}
-          <div className="lg:col-span-7 space-y-6">
-            {(activeTab === 'theory' || activeTab === 'integrated') && (
-              <div className="grid sm:grid-cols-2 gap-4 animate-in slide-in-from-left-4 duration-500">
-                {[1, 2].map(num => (
-                  <div key={num} className="p-6 bg-black/60 border border-emerald-900/40 rounded-sm relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-1">
-                      <Zap className="w-3 h-3 text-emerald-900/50" />
-                    </div>
-                    <div className="text-[10px] font-black text-[#00ff9f]/80 uppercase tracking-widest mb-6 flex items-center gap-2">
-                      <div className="w-2 h-2 bg-[#00ff9f] animate-pulse" /> ASSESSMENT 0{num}
-                    </div>
-                    <div className="space-y-5">
-                      <div className="space-y-2">
-                        <label className="text-[8px] font-black text-emerald-700 uppercase ml-1">
-                          TEST [60 MAX]
-                        </label>
-                        <input
-                          type="number"
-                          value={theoryMarks[`i${num}Test`]}
-                          onChange={(e) => setTheoryMarks({ ...theoryMarks, [`i${num}Test`]: e.target.value })}
-                          className="w-full bg-black border border-emerald-900/50 rounded-none px-4 py-3 text-sm font-bold text-[#00ff9f] focus:border-[#00ff9f] outline-none transition-all placeholder:text-emerald-900"
-                          placeholder="00"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-[8px] font-black text-emerald-700 uppercase ml-1">
-                          ASSIGN [40 MAX]
-                        </label>
-                        <input
-                          type="number"
-                          value={theoryMarks[`i${num}Assign`]}
-                          onChange={(e) => setTheoryMarks({ ...theoryMarks, [`i${num}Assign`]: e.target.value })}
-                          className="w-full bg-black border border-emerald-900/50 rounded-none px-4 py-3 text-sm font-bold text-[#00ff9f] focus:border-[#00ff9f] outline-none transition-all placeholder:text-emerald-900"
-                          placeholder="00"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {(activeTab === 'integrated' || activeTab === 'lab') && (
-              <div className="p-8 bg-black/60 border border-emerald-900/40 rounded-sm animate-in slide-in-from-left-4 duration-500">
-                <div className="flex justify-between items-center mb-8 border-b border-emerald-900/20 pb-4">
-                  <div className="text-[10px] font-black text-[#00ff9f] uppercase tracking-widest flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#00ff9f] shadow-[0_0_8px_#00ff9f]" /> DATA LAB MODULATOR
-                  </div>
-                  <div className="flex items-center gap-3 bg-black border border-emerald-900/50 px-4 py-2">
-                    <span className="text-[8px] font-black text-emerald-700 uppercase">Count</span>
-                    <input
-                      type="number"
-                      value={labState.numExpts}
-                      onChange={(e) => handleNumExptsChange(e.target.value)}
-                      className="w-8 bg-transparent text-[10px] font-black text-[#00ff9f] text-center outline-none border-b border-emerald-900/50"
-                      placeholder="--"
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-8">
-                  <div className="space-y-2">
-                    <label className="text-[8px] font-black text-emerald-700 uppercase ml-1">
-                      MODEL LAB EXAM [100]
-                    </label>
-                    <input
-                      type="number"
-                      value={labState.modelLab}
-                      onChange={(e) => setLabState({ ...labState, modelLab: e.target.value })}
-                      className="w-full bg-black border border-emerald-900/50 rounded-none px-4 py-3 text-sm font-bold text-[#00ff9f] focus:border-[#00ff9f] outline-none transition-all"
-                      placeholder="00"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
-                    {labState.exptMarks.map((mark, i) => (
-                      <div key={i} className="flex flex-col gap-1">
-                        <span className="text-[7px] text-emerald-900 font-black text-center italic">E {i + 1}</span>
-                        <input
-                          type="number"
-                          value={mark}
-                          onChange={(e) => updateExptMark(i, e.target.value)}
-                          className="w-full bg-black border border-emerald-900/30 rounded-none p-2 text-center text-xs font-bold text-[#00ff9f] focus:border-[#00ff9f]/50 outline-none transition-all"
-                          placeholder="0"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'sgpa' && (
-              <div className="p-8 bg-black/60 border border-emerald-900/40 rounded-sm animate-in zoom-in duration-500">
-                <div className="flex justify-between items-center mb-8 border-b border-emerald-900/20 pb-4">
-                   <div className="text-[10px] font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2">
-                     <div className="w-2 h-2 bg-emerald-400" /> SGPA CORE PROCESSOR
-                   </div>
-                   <button
-                     onClick={() => setSubjects([...subjects, { id: Date.now(), grade: '', credits: '' }])}
-                     className="p-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 transition-all"
-                   >
-                     <Plus className="w-5 h-5" />
-                   </button>
-                </div>
-                <div className="space-y-3 max-h-[350px] overflow-y-auto pr-3 custom-scrollbar">
-                  {subjects.map((s, idx) => (
-                    <div key={s.id} className="flex items-center gap-4">
-                      <span className="text-[10px] font-black text-emerald-900 w-6 italic">ID {idx + 1}</span>
-                      <input
-                        type="number"
-                        placeholder="GP"
-                        value={s.grade}
-                        onChange={(e) => setSubjects(subjects.map(item => item.id === s.id ? { ...item, grade: e.target.value } : item))}
-                        className="flex-1 bg-black border border-emerald-900/50 rounded-none px-5 py-3 text-sm font-bold text-[#00ff9f] outline-none focus:border-[#00ff9f]"
-                      />
-                      <input
-                        type="number"
-                        placeholder="CR"
-                        value={s.credits}
-                        onChange={(e) => setSubjects(subjects.map(item => item.id === s.id ? { ...item, credits: e.target.value } : item))}
-                        className="w-24 bg-black border border-emerald-900/50 rounded-none px-5 py-3 text-sm font-bold text-[#00ff9f] outline-none focus:border-[#00ff9f]"
-                      />
-                      <button
-                        onClick={() => setSubjects(subjects.filter(item => item.id !== s.id))}
-                        className="text-emerald-900 hover:text-rose-500 transition-colors p-2"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Results Output Panel */}
-          <div className="lg:col-span-5 animate-in fade-in duration-700">
-            <div className="p-10 bg-black/80 border border-[#00ff9f]/20 rounded-none shadow-[0_0_30px_rgba(0,255,159,0.1)] relative overflow-hidden backdrop-blur-xl group hover:border-[#00ff9f]/40 transition-all flex flex-col justify-center min-h-[450px]">
-               <div className="absolute top-0 left-0 w-2 h-2 bg-[#00ff9f]" />
-               <div className="absolute top-0 right-0 w-2 h-2 bg-[#00ff9f]" />
-               <div className="absolute bottom-0 left-0 w-2 h-2 bg-[#00ff9f]" />
-               <div className="absolute bottom-0 right-0 w-2 h-2 bg-[#00ff9f]" />
-
-               {activeTab !== 'sgpa' ? (
-                 <div className="space-y-10">
-                   <div className="text-center md:text-left">
-                     <div className="text-[9px] font-black text-emerald-700 uppercase tracking-[0.4em] mb-3 flex items-center gap-2">
-                       <div className="w-1 h-1 bg-emerald-700" /> ANALYZING INTERNAL DATA
-                     </div>
-                     <div className="flex items-baseline justify-center md:justify-start gap-3">
-                       <span className="text-8xl font-black text-[#00ff9f] drop-shadow-[0_0_15px_rgba(0,255,159,0.3)] tracking-tighter leading-none">
-                         {calcHub.totalInternal}
-                       </span>
-                       <span className="text-3xl font-black text-emerald-900">/ {calcHub.maxInternal}</span>
-                     </div>
-                   </div>
-
-                   <div className="space-y-4">
-                      <div className="flex items-center justify-between p-6 bg-emerald-500/5 border border-emerald-500/20">
-                         <div className="flex flex-col">
-                           <span className="text-[9px] font-black text-emerald-600 uppercase tracking-widest">MIN PASS ESE</span>
-                           <span className="text-[7px] text-emerald-900 font-bold uppercase tracking-widest">Incl. 45% Rule</span>
-                         </div>
-                         <span className="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.2)] leading-none">
-                           {calcHub.passSem100 <= 0 ? 'SECURED' : calcHub.passSem100.toFixed(2)}
-                         </span>
-                      </div>
-                      
-                      <div className="grid gap-2">
-                         {calcHub.predictions.map(p => (
-                           <div key={p.label} className="flex items-center justify-between px-5 py-4 bg-emerald-950/10 border border-emerald-900/20 hover:border-[#00ff9f]/30 transition-all group/row">
-                              <span className={`text-2xl font-black ${p.color} group-hover/row:drop-shadow-[0_0_8px_currentColor]`}>
-                                {p.label}
-                              </span>
-                              <span className="text-lg font-black text-white/90">
-                                {p.sem100 <= 0 ? 'SECURED' : p.sem100 > 100 ? 'FAILED' : p.sem100.toFixed(2)}
-                              </span>
-                           </div>
-                         ))}
-                      </div>
-                   </div>
-                 </div>
-               ) : (
-                 <div className="text-center py-4 relative overflow-visible px-4">
-                   <div className="text-[10px] font-black text-[#00ff9f] uppercase tracking-[0.6em] mb-12 italic opacity-50">
-                     COMPUTED SGPA OUTPUT
-                   </div>
-                   <div className="text-7xl md:text-8xl font-black text-white leading-none tracking-tighter drop-shadow-[0_0_30px_rgba(0,255,159,0.3)] skew-x-[-15deg] break-words">
-                    {calculateSGPA()}
-                   </div>
-                 </div>
-               )}
+          <div class="assessment-card">
+            <div class="card-title"><div class="title-pulse"></div> Assessment 02</div>
+            <div class="input-field">
+              <label>Test [60 Max]</label>
+              <input type="number" id="i2Test" placeholder="00">
+            </div>
+            <div class="input-field">
+              <label>Assign [40 Max]</label>
+              <input type="number" id="i2Assign" placeholder="00">
             </div>
           </div>
         </div>
 
-        <footer className="text-center text-emerald-900 text-[10px] font-black uppercase tracking-[0.8em] pt-12">
-          [ praneeth kp ]
-        </footer>
-      </div>
-    </div>
-  );
-};
+        <!-- Practical Component (Integrated/Lab Only) -->
+        <div id="practical-panel" class="panel hidden" style="margin-top: 1.5rem;">
+          <div class="lab-header">
+            <div class="card-title"><div class="title-pulse"></div> Data Lab Modulator</div>
+            <div class="count-selector">
+              <span>Count</span>
+              <input type="number" id="numExpts" value="1">
+            </div>
+          </div>
+          
+          <div class="input-field">
+            <label>Model Lab Exam [100]</label>
+            <input type="number" id="modelLab" placeholder="00">
+          </div>
 
-export default App;
+          <div class="input-field">
+            <label style="margin-bottom: 1rem;">Experiment Record [Avg of all]</label>
+            <div id="experiment-grid" class="experiment-grid custom-scrollbar">
+              <!-- JS will inject E1, E2, etc. here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SGPA Core Processor -->
+        <div id="sgpa-panel" class="panel hidden">
+          <div class="hub-header">
+            <div class="hub-title"><div class="dot"></div> SGPA Core Processor</div>
+            <button id="add-course-btn" class="add-btn">
+              <svg style="width:1.25rem; height:1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            </button>
+          </div>
+          <div id="subjects-list" class="subjects-list custom-scrollbar">
+            <!-- Subject entries injected here -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Results Display Panel -->
+      <section id="results-panel" class="lg:col-span-5">
+        <div class="results-panel">
+          <div class="bracket top-l"></div><div class="bracket top-r"></div>
+          <div class="bracket bot-l"></div><div class="bracket bot-r"></div>
+
+          <!-- Dynamic Output: Prediction or SGPA -->
+          <div id="prediction-output">
+            <div class="internal-status">
+              <div class="status-label"><div class="status-dot"></div> Analyzing Internal Data</div>
+              <div class="internal-score">
+                <span id="totalInternal" class="score-big">0</span>
+                <span id="maxInternal" class="score-max">/ 40</span>
+              </div>
+            </div>
+
+            <div class="pass-target-box">
+              <div class="pass-label-stack">
+                <span class="pass-label">Min Pass ESE</span>
+                <span class="rule-tag">Incl. 45% Rule</span>
+              </div>
+              <span id="passTarget" class="pass-value">0.00</span>
+            </div>
+
+            <div id="grade-predictions" class="space-y-1">
+              <!-- Grade predictions injected here -->
+            </div>
+          </div>
+
+          <div id="sgpa-output" class="hidden">
+            <div class="sgpa-output-container">
+              <div class="output-label">Computed SGPA Output</div>
+              <div id="sgpaDisplay" class="sgpa-display">0.00</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <footer>[ praneeth kp ]</footer>
+  </div>
+
+  <!-- Vanilla JavaScript Implementation -->
+  <script>
+    /**
+     * GRADE PILOT - Engine Core
+     * Regulation 2022 (Autonomous) Logic
+     */
+
+    const state = {
+      activeTab: 'theory',
+      theoryMarks: {
+        i1Test: 0, i1Assign: 0,
+        i2Test: 0, i2Assign: 0
+      },
+      lab: {
+        modelLab: 0,
+        numExpts: 1,
+        expts: [0]
+      },
+      courses: [
+        { id: Date.now(), grade: '', credits: '' }
+      ]
+    };
+
+    // --- DOM Elements ---
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const theoryInputs = document.getElementById('theory-inputs');
+    const practicalPanel = document.getElementById('practical-panel');
+    const sgpaPanel = document.getElementById('sgpa-panel');
+    const predictionOutput = document.getElementById('prediction-output');
+    const sgpaOutput = document.getElementById('sgpa-output');
+    const exptGrid = document.getElementById('experiment-grid');
+    const subjectsList = document.getElementById('subjects-list');
+
+    // --- Tab Management ---
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.activeTab = btn.getAttribute('data-tab');
+        updateUI();
+      });
+    });
+
+    function updateUI() {
+      // Toggle Panels
+      theoryInputs.classList.toggle('hidden', state.activeTab === 'lab' || state.activeTab === 'sgpa');
+      practicalPanel.classList.toggle('hidden', state.activeTab === 'theory' || state.activeTab === 'sgpa');
+      sgpaPanel.classList.toggle('hidden', state.activeTab !== 'sgpa');
+      
+      // Toggle Outputs
+      predictionOutput.classList.toggle('hidden', state.activeTab === 'sgpa');
+      sgpaOutput.classList.toggle('hidden', state.activeTab !== 'sgpa');
+
+      calculate();
+    }
+
+    // --- Calculation Engine ---
+    function calculate() {
+      if (state.activeTab === 'sgpa') {
+        renderSGPA();
+        return;
+      }
+
+      // Input Collection
+      const i1T = parseFloat(document.getElementById('i1Test').value) || 0;
+      const i1A = parseFloat(document.getElementById('i1Assign').value) || 0;
+      const i2T = parseFloat(document.getElementById('i2Test').value) || 0;
+      const i2A = parseFloat(document.getElementById('i2Assign').value) || 0;
+      const model = parseFloat(document.getElementById('modelLab').value) || 0;
+      
+      const exptInputs = document.querySelectorAll('.expt-in');
+      let exptSum = 0;
+      exptInputs.forEach(inp => exptSum += (parseFloat(inp.value) || 0));
+      const exptAvg = exptInputs.length > 0 ? exptSum / exptInputs.length : 0;
+
+      // Logic implementation
+      const theorySum200 = (i1T + i1A) + (i2T + i2A);
+      const labBase100 = (exptAvg * 0.75) + (model * 0.25);
+
+      let totalInternal = 0;
+      let maxInternal = 40;
+
+      if (state.activeTab === 'theory') {
+        totalInternal = Math.round((theorySum200 / 200) * 40);
+        maxInternal = 40;
+      } else if (state.activeTab === 'integrated') {
+        const tPart = (theorySum200 / 200) * 25;
+        const pPart = (labBase100 / 100) * 25;
+        totalInternal = Math.round(tPart + pPart);
+        maxInternal = 50;
+      } else if (state.activeTab === 'lab') {
+        totalInternal = Math.round((labBase100 / 100) * 60);
+        maxInternal = 60;
+      }
+
+      const maxESE = 100 - maxInternal;
+      const minESEReq = maxESE * 0.45; // 45% ESE Min Requirement
+
+      // Render Totals
+      document.getElementById('totalInternal').innerText = totalInternal;
+      document.getElementById('maxInternal').innerText = '/ ' + maxInternal;
+
+      // Pass Calculation
+      const passTarget = Math.max(minESEReq, 50 - totalInternal);
+      const pass100 = (passTarget / maxESE) * 100;
+      document.getElementById('passTarget').innerText = pass100 <= 0 ? 'SECURED' : pass100.toFixed(2);
+
+      // Grade Predictions
+      const thresholds = [
+        { label: 'O', min: 91, color: 'text-[#00ff9f]' },
+        { label: 'A+', min: 81, color: 'text-[#39ff14]' },
+        { label: 'A', min: 71, color: 'text-[#00e676]' },
+        { label: 'B+', min: 61, color: 'text-emerald-400' },
+        { label: 'B', min: 56, color: 'text-green-500' },
+        { label: 'C', min: 50, color: 'text-slate-500' }
+      ];
+
+      const predictionsHTML = thresholds.map(g => {
+        const need = Math.max(minESEReq, g.min - totalInternal);
+        const req100 = (need / maxESE) * 100;
+        let statusText = req100.toFixed(2);
+        
+        if (req100 <= 0) statusText = 'SECURED';
+        if (req100 > 100) statusText = 'FAILED';
+
+        return `
+          <div class="grade-row">
+            <span class="grade-label" style="color: ${g.color.includes('[') ? g.color.match(/#\w+/)[0] : 'currentColor'}">${g.label}</span>
+            <span class="grade-req">${statusText}</span>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('grade-predictions').innerHTML = predictionsHTML;
+    }
+
+    // --- SGPA Hub Logic ---
+    function renderSGPA() {
+      let pts = 0;
+      let crs = 0;
+      const rows = document.querySelectorAll('.subject-entry');
+      rows.forEach(row => {
+        const g = parseFloat(row.querySelector('.g-in').value) || 0;
+        const c = parseFloat(row.querySelector('.c-in').value) || 0;
+        pts += (g * c);
+        crs += c;
+      });
+      const res = crs > 0 ? (pts / crs).toFixed(2) : '0.00';
+      document.getElementById('sgpaDisplay').innerText = res;
+    }
+
+    function addCourse() {
+      const id = Date.now();
+      const div = document.createElement('div');
+      div.className = 'subject-entry';
+      div.id = 'course-' + id;
+      div.innerHTML = `
+        <span class="entry-id">ID</span>
+        <input type="number" placeholder="GP" class="subject-input g-in">
+        <input type="number" placeholder="CR" class="subject-input short c-in">
+        <button class="remove-btn" onclick="removeCourse(${id})">
+          <svg style="width:1rem; height:1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        </button>
+      `;
+      subjectsList.appendChild(div);
+      
+      div.querySelectorAll('input').forEach(inp => {
+        inp.addEventListener('input', renderSGPA);
+      });
+    }
+
+    function removeCourse(id) {
+      const el = document.getElementById('course-' + id);
+      if (el) el.remove();
+      renderSGPA();
+    }
+
+    // --- Experiment Grid Modulator ---
+    function buildExptGrid() {
+      const count = parseInt(document.getElementById('numExpts').value);
+      if (isNaN(count)) {
+        exptGrid.innerHTML = '';
+        return;
+      }
+      
+      let html = '';
+      for (let i = 1; i <= Math.max(0, count); i++) {
+        html += `
+          <div class="experiment-input">
+            <span>E ${i}</span>
+            <input type="number" class="expt-in" placeholder="0">
+          </div>
+        `;
+      }
+      exptGrid.innerHTML = html;
+      
+      document.querySelectorAll('.expt-in').forEach(inp => {
+        inp.addEventListener('input', calculate);
+      });
+      calculate();
+    }
+
+    // --- Initialization & Event Binding ---
+    document.getElementById('numExpts').addEventListener('input', buildExptGrid);
+    document.getElementById('add-course-btn').addEventListener('click', addCourse);
+    
+    // Bind all static inputs
+    document.querySelectorAll('input').forEach(inp => {
+      inp.addEventListener('input', calculate);
+    });
+
+    // Start Up
+    buildExptGrid();
+    addCourse(); // Add one initial course row
+    updateUI();
+  </script>
+</body>
+</html>
