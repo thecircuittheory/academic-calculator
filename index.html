@@ -95,6 +95,16 @@
 
     .custom-scroll::-webkit-scrollbar { width: 3px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: var(--neon-green); border-radius: 10px; }
+
+    /* --- CLEANUP: Remove number input arrows --- */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
   </style>
 </head>
 <body>
@@ -392,7 +402,7 @@
         const totalNeededFromSEE = g.t - cie;
         const neededFromTheoryPaperContrib = totalNeededFromSEE - known;
         
-        // Fatal Fix: Corrected double assignment error
+        // Convert contribution back to marks out of 100 on the paper
         let theoryPaperMark = neededFromTheoryPaperContrib / conf.theoryWeight;
         
         let ruleDisplay = "";
