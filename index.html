@@ -47,7 +47,7 @@
     body.theme-sakura {
       --warning: #b8860b; --primary: #d4418e; --secondary: #ffb7c5; --bg: #fff5f7; --text: #4a152c;
       --text-dim: #9e7184; --panel: rgba(255, 255, 255, 0.92); --glow: transparent;
-      --radius-lg: 40px; --radius-sm: 20px; --border: 1px solid rgba(212, 65, 142, 0.1);
+      --radius-lg: 45px; --radius-sm: 20px; --border: 1px solid rgba(212, 65, 142, 0.1);
       --input-bg: #fff; --row-bg: #fff;
       --font-h: 'Rajdhani', sans-serif; --font-b: 'Inter', sans-serif; --fx-grid: none;
       --fx-scan: 0; --shadow: 0 15px 40px rgba(212, 65, 142, 0.1); --bracket: none;
@@ -179,7 +179,6 @@
     .experiment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 0.75rem; max-height: 180px; overflow-y: auto; margin: 1rem 0; padding: 10px; }
     .expt-val { background: var(--input-bg); border: var(--border); border-radius: calc(var(--radius-sm)/4); padding: 0.6rem; color: var(--primary); text-align: center; outline: none; font-weight: 900; }
 
-    /* FIXED: Refined Experiment Count Box */
     #numExpts {
       width: 40px;
       background: var(--input-bg);
@@ -253,7 +252,7 @@
       <div class="theme-selector-box">
         <label>Architecture Pulse</label>
         <select class="theme-select" id="themeEngine">
-          <optgroup label="Smooth Architectures (Pellet Style)">
+          <optgroup label="Smooth Architectures (Pellet Shape)">
             <option value="minimal" selected>Minimalist (Glass White)</option>
             <option value="sakura">Sakura Blossom (Petals)</option>
             <option value="oceanic">Oceanic Deep (Bubbles)</option>
@@ -312,14 +311,14 @@
           <div id="theory-cie" class="panel">
             <div class="card-title">Continuous Internal Assessment</div>
             <div class="internal-block">
-              <div class="block-header"><span>ASSESSMENT I</span><span>/100</span></div>
+              <div class="block-header"><span>ASSESSMENT I (Internal 1)</span><span>/100</span></div>
               <div class="input-grid">
                 <div class="input-field"><label>Test [60]</label><input type="number" id="i1" placeholder="00"></div>
                 <div class="input-field"><label>Assignment [40]</label><input type="number" id="i1ass" placeholder="00"></div>
               </div>
             </div>
             <div class="internal-block">
-              <div class="block-header"><span>ASSESSMENT II</span><span>/100</span></div>
+              <div class="block-header"><span>ASSESSMENT II (Internal 2)</span><span>/100</span></div>
               <div class="input-grid">
                 <div class="input-field"><label>Test [60]</label><input type="number" id="i2" placeholder="00"></div>
                 <div class="input-field"><label>Assignment [40]</label><input type="number" id="i2ass" placeholder="00"></div>
@@ -362,7 +361,7 @@
           <div class="regulation-tag">R2022 CL 15.1: 45% SEE PASS RULE</div>
           
           <div style="margin-top:3.5rem;">
-            <div class="card-title">Paper Target Analysis</div>
+            <div class="card-title">Theory Paper Targets</div>
             <div id="target-list" class="custom-scroll"></div>
           </div>
         </div>
@@ -478,9 +477,7 @@
       btn.onclick = () => {
         appState.directMode = !appState.directMode;
         btn.classList.toggle('active', appState.directMode);
-        document.getElementById('direct-cie-panel').classList.toggle('hidden', !appState.directMode);
-        document.getElementById('detailed-entry-stack').classList.toggle('hidden', appState.directMode);
-        updateDirectMaxLabel();
+        syncUI(); // Centralized sync
         calculate();
       };
       document.getElementById('directCie').oninput = calculate;
@@ -488,7 +485,9 @@
 
     function updateDirectMaxLabel() {
       const c = CONFIG[appState.tab];
-      document.getElementById('directMaxLabel').innerText = `/${c.cieMax}`;
+      if (c) {
+        document.getElementById('directMaxLabel').innerText = `/${c.cieMax}`;
+      }
     }
 
     function initApp() {
@@ -524,17 +523,35 @@
       else if (tab === 'hybrid') { panels['theory-cie'] = true; panels['lab-panel'] = true; panels['hybrid-see'] = true; panels['std-results'] = true; }
       else if (tab === 'sgpa') { panels['sgpa-panel'] = true; panels['sgpa-results'] = true; }
 
-      Object.keys(panels).forEach(id => document.getElementById(id).classList.toggle('hidden', !panels[id]));
-      const detailed = document.getElementById('detailed-entry-stack');
-      const direct = document.getElementById('direct-cie-panel');
-      const prompt = document.querySelector('.override-prompt');
-      if (tab === 'sgpa') { detailed.classList.add('hidden'); direct.classList.add('hidden'); prompt.classList.add('hidden'); }
-      else { prompt.classList.remove('hidden'); if(appState.directMode) { detailed.classList.add('hidden'); direct.classList.remove('hidden'); } }
-      if (tab === 'sgpa') calcSGPA();
+      Object.keys(panels).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('hidden', !panels[id]);
+      });
+
+      const detailedStack = document.getElementById('detailed-entry-stack');
+      const directPanel = document.getElementById('direct-cie-panel');
+      const overridePrompt = document.querySelector('.override-prompt');
+
+      if(tab === 'sgpa') {
+        detailedStack.classList.add('hidden');
+        directPanel.classList.add('hidden');
+        overridePrompt.classList.add('hidden');
+      } else {
+        overridePrompt.classList.remove('hidden');
+        if(appState.directMode) {
+          detailedStack.classList.add('hidden');
+          directPanel.classList.remove('hidden');
+        } else {
+          detailedStack.classList.remove('hidden');
+          directPanel.classList.add('hidden');
+        }
+      }
+      if (appState.tab === 'sgpa') calcSGPA();
     }
 
     function renderExpts() {
       const grid = document.getElementById('expt-list');
+      if(!grid) return;
       grid.innerHTML = '';
       for(let i=1; i<=appState.expts; i++) {
         const input = document.createElement('input');
@@ -546,6 +563,8 @@
     function calculate() {
       if(appState.tab === 'sgpa') return calcSGPA();
       const conf = CONFIG[appState.tab];
+      if (!conf) return;
+
       let cie = 0; let knownSee = 0;
 
       if(appState.directMode) {
@@ -570,6 +589,7 @@
 
     function renderTargets(cie, known, conf) {
       const list = document.getElementById('target-list');
+      if(!list) return;
       list.innerHTML = '';
       const grades = [{ l:'O', p:10, t:91 }, { l:'A+', p:9, t:81 }, { l:'A', p:8, t:71 }, { l:'B+', p:7, t:61 }, { l:'B', p:6, t:56 }, { l:'C', p:5, t:50 }];
       const totalSeeWeight = (appState.tab === 'theory') ? 60 : (appState.tab === 'lab' ? 40 : 50);
