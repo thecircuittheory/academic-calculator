@@ -169,7 +169,6 @@
     .experiment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 0.75rem; max-height: 180px; overflow-y: auto; margin: 1rem 0; padding: 10px; }
     .expt-val { background: var(--input-bg); border: var(--border); border-radius: calc(var(--radius-sm)/4); padding: 0.6rem; color: var(--primary); text-align: center; outline: none; font-weight: 900; }
 
-    /* --- FIXED: Experiment Count Small Box --- */
     #hybrid-numExpts, #lab-numExpts {
       width: 50px;
       background: var(--input-bg);
@@ -233,6 +232,61 @@
     .hidden { display: none !important; }
     .custom-scroll::-webkit-scrollbar { width: 4px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+    /* New External Link Button Style */
+    .external-link-box {
+      display: block;
+      text-decoration: none;
+      background: rgba(0,0,0,0.2);
+      border: 1px dashed var(--primary);
+      padding: 1.5rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .external-link-box:hover {
+      background: var(--primary);
+      box-shadow: 0 0 20px var(--glow);
+      border-style: solid;
+    }
+    .external-link-box:hover .ext-title,
+    .external-link-box:hover .ext-sub {
+      color: var(--bg);
+    }
+    .ext-title { font-size: 11px; font-weight: 900; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
+    .ext-sub { font-size: 8px; font-weight: 700; color: var(--text-dim); margin-top: 6px; letter-spacing: 1px; transition: 0.3s; }
+
+    /* POPUP SYSTEM */
+    .popup-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+      z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s;
+    }
+    .popup-overlay.active { display: flex; opacity: 1; }
+    .popup-content {
+      background: var(--panel); border: 1px solid var(--primary); padding: 2rem;
+      width: 90%; max-width: 400px; border-radius: var(--radius-lg);
+      box-shadow: 0 0 30px var(--glow); transform: scale(0.9); transition: transform 0.3s;
+      text-align: center; position: relative;
+    }
+    .popup-overlay.active .popup-content { transform: scale(1); }
+    .sem-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    .sem-btn {
+      background: rgba(255,255,255,0.05); border: var(--border); color: var(--primary);
+      padding: 1rem; border-radius: var(--radius-sm); font-family: var(--font-main);
+      font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase;
+      font-size: 12px; letter-spacing: 1px;
+    }
+    .sem-btn:hover { background: var(--primary); color: var(--bg); box-shadow: 0 0 15px var(--glow); }
+    .sem-btn.locked { border-color: var(--text-dim); color: var(--text-dim); opacity: 0.7; }
+    .sem-btn.locked:hover { background: rgba(255,50,50,0.1); border-color: var(--danger); color: var(--danger); box-shadow: none; }
+    .close-popup {
+      position: absolute; top: 10px; right: 10px; background: none; border: none;
+      color: var(--danger); font-size: 1.5rem; cursor: pointer;
+    }
+    #popup-status { min-height: 15px; margin-top: 15px; color: var(--danger); transition: 0.3s; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
   </style>
 </head>
 <body class="theme-minimal">
@@ -403,6 +457,13 @@
         <div id="tab-sgpa" class="tab-content hidden">
           <div class="panel">
             <div class="card-title">GPA Data Core</div>
+
+            <!-- POPUP TRIGGER -->
+            <div class="external-link-box" id="open-sem-popup" style="cursor: pointer;">
+              <div class="ext-title">Select Semester Data</div>
+              <div class="ext-sub">[ EEE DEPARTMENT ARCHIVES ]</div>
+            </div>
+
             <div id="sgpa-list"></div>
             <button id="add-course" style="width:100%; padding:1rem; background:rgba(0,0,0,0.03); border:var(--border); color:var(--primary); cursor:pointer; margin-top:1.5rem; font-family:inherit; border-radius: var(--radius-lg); font-weight: 700;">+ REGISTER NEW COURSE</button>
           </div>
@@ -435,6 +496,27 @@
 
         <div class="watermark">// Dr. NGP IT R2022 // EEE 25-29 //</div>
       </div>
+    </div>
+  </div>
+
+  <!-- POPUP STRUCTURE -->
+  <div class="popup-overlay" id="sem-popup">
+    <div class="popup-content">
+      <button class="close-popup" id="close-popup-btn">&times;</button>
+      <div class="card-title" style="justify-content:center; margin-bottom:0.5rem;">ACCESS TERMINAL</div>
+      <div style="font-size:9px; color:var(--text-dim); letter-spacing:1px; margin-bottom:1.5rem;">SELECT DATA STREAM</div>
+      
+      <div class="sem-grid">
+        <button class="sem-btn">SEMESTER 01</button>
+        <button class="sem-btn locked">SEMESTER 02</button>
+        <button class="sem-btn locked">SEMESTER 03</button>
+        <button class="sem-btn locked">SEMESTER 04</button>
+        <button class="sem-btn locked">SEMESTER 05</button>
+        <button class="sem-btn locked">SEMESTER 06</button>
+        <button class="sem-btn locked">SEMESTER 07</button>
+        <button class="sem-btn locked">SEMESTER 08</button>
+      </div>
+      <div id="popup-status"></div>
     </div>
   </div>
 
@@ -560,6 +642,37 @@
         list.appendChild(div);
         div.querySelectorAll('input').forEach(i => i.oninput = calcSGPA);
       };
+
+      // POPUP LOGIC
+      const popup = document.getElementById('sem-popup');
+      const popupStatus = document.getElementById('popup-status');
+
+      document.getElementById('open-sem-popup').onclick = () => {
+        popup.style.display = 'flex';
+        setTimeout(() => popup.classList.add('active'), 10);
+      };
+
+      function closePopup() {
+        popup.classList.remove('active');
+        setTimeout(() => { popup.style.display = 'none'; popupStatus.innerText = ''; }, 300);
+      }
+
+      document.getElementById('close-popup-btn').onclick = closePopup;
+      popup.onclick = (e) => { if(e.target === popup) closePopup(); };
+
+      // Semester Button Logic
+      document.querySelectorAll('.sem-btn').forEach((btn, idx) => {
+        btn.onclick = () => {
+          if (idx === 0) { // Semester 1
+            window.open('https://thecircuittheory.github.io/gpa-analyzer/', '_blank');
+            closePopup();
+          } else { // Others
+            popupStatus.innerText = "LINK UPLINK OFFLINE // COMING SOON";
+            popupStatus.style.opacity = 1;
+            setTimeout(() => popupStatus.innerText = "", 2000);
+          }
+        };
+      });
 
       renderExpts('hybrid');
       renderExpts('lab');
