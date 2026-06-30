@@ -913,13 +913,13 @@
           { name: "Engineering Physics", credits: 2, type: "Theory" },
           { name: "Engineering Chemistry", credits: 2, type: "Theory" },
           { name: "Compendium of Electrical Engineering", credits: 2, type: "Theory" },
-          { name: "Engineering Graphics", credits: 4, type: "Theory" },
-          { name: "Problem Solving and Python Programming", credits: 4, type: "Theory + Lab" },
+          { name: "Engineering Graphics", credits: 3, type: "Theory" },
+          { name: "Problem Solving and Python Programming", credits: 3, type: "Theory + Lab" },
           { name: "Heritage of Tamils", credits: 1, type: "One Credit" },
           { name: "Professional Ethics 1", credits: 1, type: "Non-Credit" }, // Note: PDF says non-credit for sem 1, but 1 credit in sem 2. Marking as 0 for calc logic if needed, but listed as 1 hr. We'll use 0 credits for non-credit courses to not affect SGPA.
-          { name: "Basic Science Laboratory", credits: 2, type: "Practical" },
-          { name: "Engineering Practices Laboratory", credits: 2, type: "Practical" },
-          { name: "C STEM Project", credits: 2, type: "Mini Project" }
+          { name: "Basic Science Laboratory", credits: 1, type: "Practical" },
+          { name: "Engineering Practices Laboratory", credits: 1, type: "Practical" },
+          { name: "C STEM Project", credits: 0, type: "Mini Project" }
         ].map(c => c.name === "Professional Ethics 1" ? {...c, credits: 0} : c)
       },
       { // Sem II
@@ -948,10 +948,10 @@
           { name: "Digital Circuits and Logic Design", credits: 4, type: "Theory" },
           { name: "Open Elective - I", credits: 3, type: "Theory" },
           { name: "Electric Vehicle Technology", credits: 2, type: "Theory" },
-          { name: "Sensors and Instrumentation", credits: 4, type: "Theory + Lab" },
+          { name: "Sensors and Instrumentation", credits: 3, type: "Theory + Lab" },
           { name: "Design Thinking", credits: 1, type: "One Credit" },
-          { name: "DC Machines and Transformers Laboratory", credits: 4, type: "Practical" },
-          { name: "Mini Project - I", credits: 2, type: "Mini Project" }
+          { name: "DC Machines and Transformers Laboratory", credits: 2, type: "Practical" },
+          { name: "Mini Project - I", credits: 0, type: "Mini Project" }
         ]
       },
       { // Sem IV
@@ -965,8 +965,8 @@
           { name: "Open Elective II", credits: 3, type: "Theory" },
           { name: "Biology for Engineers", credits: 1, type: "One Credit" },
           { name: "Integrated Aptitude Skills I", credits: 0, type: "Non-Credit" },
-          { name: "AC Machines Laboratory", credits: 4, type: "Practical" },
-          { name: "Integrated Circuits and Control Systems Laboratory", credits: 4, type: "Practical" },
+          { name: "AC Machines Laboratory", credits: 2, type: "Practical" },
+          { name: "Integrated Circuits and Control Systems Laboratory", credits: 2, type: "Practical" },
           { name: "Mini Project - I", credits: 2, type: "Mini Project" } // Assumed from structure, verify credits if needed.
         ]
       },
@@ -983,7 +983,7 @@
           { name: "Integrated Aptitude Skills II", credits: 0, type: "Non-Credit" },
           { name: "Microprocessors and Controllers Laboratory", credits: 2, type: "Practical" }, // Note: Hrs=4, C=2
           { name: "Interpersonal Skills and Personality Development Lab", credits: 1, type: "Practical" },
-          { name: "Mini Project - II", credits: 2, type: "Mini Project" } // Note: Hrs=2, C=2 likely. PDF cuts off slightly.
+          { name: "Mini Project - II", credits: 0, type: "Mini Project" } // Note: Hrs=2, C=2 likely. PDF cuts off slightly.
         ]
       },
       { // Sem VI
