@@ -3,351 +3,679 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GRADE PILOT | R2022 OFFICIAL</title>
+  <title>Grade Pilot | R2022 Official</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
-    /* --- THEME DNA ENGINE --- */
     :root {
-      /* Logic Statics */
-      --danger: #ff3333;
-      --gold-point: #ffcc00;
-      --font-main: 'Orbitron', sans-serif;
+      /* Soft Pastel Theme based on image reference */
+      --primary: #cba8f0;      /* Soft lavender/purple */
+      --primary-hover: #b38ce0;
+      --secondary: #ffd6e6;    /* Soft peach/pink */
+      --accent: #cde0f5;       /* Soft baby blue */
+      --success: #8dd6a5;
+      --warning: #f7cb77;
+      --danger: #f08989;
+      --text: #4a4a5c;
+      --text-muted: #85859e;
       
-      /* Default Tuff Architecture (Cyber Green - Default Tuff) */
-      --primary: #00ff9f;
-      --secondary: #39ff14;
-      --warning: #ffea00; 
-      --bg: #020203;
-      --text: #cbd5e1;
-      --text-dim: #64748b;
-      --panel: rgba(0, 0, 0, 0.75);
-      --input-bg: rgba(0, 0, 0, 0.4);
-      --row-bg: rgba(255, 255, 255, 0.03);
-      --glow: rgba(0, 255, 159, 0.3);
-      --radius-lg: 0px;
-      --radius-sm: 0px;
-      --border: 1px solid rgba(0, 255, 159, 0.3);
-      --fx-grid: block;
-      --fx-scan: 0.05;
-      --shadow: none;
-      --bracket: block;
+      --radius-lg: 28px;
+      --radius-sm: 18px;
+      --shadow-soft: 0 12px 35px rgba(180, 160, 220, 0.15);
+      --shadow-hover: 0 15px 45px rgba(180, 160, 220, 0.25);
+      
+      /* Enhanced Glassmorphism base settings */
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+      --glass-highlight: rgba(255, 255, 255, 0.9);
+      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
     }
 
-    /* --- TUFF THEMES --- */
-    body.theme-matrix { --primary: #00ff41; --secondary: #003b00; --bg: #000; --glow: rgba(0, 255, 65, 0.4); --warning: #d4af37; --input-bg: rgba(0,15,0,0.5); }
-    body.theme-bloodmoon { --primary: #ff2a2a; --secondary: #ff8c00; --bg: #0a0101; --glow: rgba(255, 42, 42, 0.4); --warning: #ffcc00; --border: 1px solid rgba(255, 42, 42, 0.3); --input-bg: rgba(15,0,0,0.5); }
-    body.theme-cobalt { --primary: #00f3ff; --secondary: #0044ff; --bg: #00050a; --glow: rgba(0, 243, 255, 0.4); --warning: #ffea00; --border: 1px solid rgba(0, 243, 255, 0.3); --input-bg: rgba(0,10,25,0.5); }
-    body.theme-neon { --primary: #ff00ff; --secondary: #bc13fe; --bg: #0a000a; --glow: rgba(255, 0, 255, 0.4); --warning: #00ffff; --input-bg: rgba(20,0,20,0.5); }
-
-    /* --- SMOOTH PELLET THEMES --- */
-    body.theme-sakura {
-      --warning: #b8860b; --primary: #d4418e; --secondary: #ffb7c5; --bg: #fff5f7; --text: #4a152c;
-      --text-dim: #9e7184; --panel: rgba(255, 255, 255, 0.92); --glow: transparent;
-      --radius-lg: 45px; --radius-sm: 20px; --border: 1px solid rgba(212, 65, 142, 0.1);
-      --input-bg: #fff; --row-bg: #fff; --fx-grid: none; --fx-scan: 0; --shadow: 0 15px 40px rgba(212, 65, 142, 0.1); --bracket: none;
-    }
-    body.theme-oceanic {
-      --warning: #a67c00; --primary: #0077be; --secondary: #40e0d0; --bg: #f0faff; --text: #003366;
-      --text-dim: #5c8ca8; --panel: rgba(255, 255, 255, 0.9); --glow: transparent;
-      --radius-lg: 35px; --radius-sm: 20px; --border: 1px solid rgba(0, 119, 190, 0.15); --bracket: none;
-      --input-bg: #fff; --row-bg: #fff; --fx-grid: none; --fx-scan: 0; --shadow: 0 15px 45px rgba(0, 119, 190, 0.1);
-    }
-    body.theme-nature {
-      --warning: #8c6e00; --primary: #2d5a27; --secondary: #a7ff83; --bg: #f7fff2; --text: #1a3317;
-      --text-dim: #6d8c69; --panel: rgba(255, 255, 255, 0.95); --glow: transparent;
-      --radius-lg: 20px; --radius-sm: 12px; --border: 1px solid rgba(45, 90, 39, 0.1);
-      --input-bg: #fff; --row-bg: #fff; --fx-grid: none; --fx-scan: 0; --shadow: 0 10px 30px rgba(45, 90, 39, 0.1); --bracket: none;
-    }
-    body.theme-aura {
-      --warning: #926d00; --primary: #7b2cbf; --secondary: #9d4edd; --bg: #f8f4ff; --text: #240046;
-      --text-dim: #7b6b91; --panel: rgba(255, 255, 255, 0.85); --glow: transparent;
-      --radius-lg: 45px; --radius-sm: 25px; --border: 1px solid rgba(123, 44, 191, 0.1);
-      --input-bg: #fff; --row-bg: #fff; --fx-grid: none; --fx-scan: 0; --shadow: 0 20px 50px rgba(123, 44, 191, 0.15); --bracket: none;
-    }
-    body.theme-minimal {
-      --warning: #8b6914; --primary: #2d3436; --secondary: #636e72; --bg: #f5f7fa; --text: #2d3436;
-      --text-dim: #636e72; --panel: rgba(255, 255, 255, 0.92); --glow: transparent;
-      --radius-lg: 35px; --radius-sm: 15px; --border: 1px solid rgba(0, 0, 0, 0.05);
-      --input-bg: #fff; --row-bg: #fff; --fx-grid: none; --fx-scan: 0; --shadow: 0 15px 35px rgba(0, 0, 0, 0.05); --bracket: none;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* --- CORE STYLES --- */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* 
+     * Complex Background matching the image 
+     * Base gradient + positioned pseudo-elements for the circular overlaps
+     */
     body { 
-      background-color: var(--bg); color: var(--text); font-family: var(--font-main); 
-      min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 1.5rem; 
-      overflow-x: hidden; transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
+      background: linear-gradient(135deg, 
+        #f4d9f9 0%,   /* Very light pink/purple top left */
+        #e3e8fc 50%,  /* Light periwinkle blue middle */
+        #fce8e8 100%  /* Soft peach bottom right */
+      );
+      color: var(--text); 
+      font-family: 'Inter', sans-serif; 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      padding: 2rem 1.5rem; 
+      overflow-x: hidden;
+      line-height: 1.5;
+      position: relative;
     }
 
-    #fx-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+    /* Abstract shapes to recreate the image's overlapping circles */
+    body::before, body::after, .bg-shape {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      z-index: -1;
+      filter: blur(2px); /* Slight blur for softness */
+    }
+
+    body::before {
+      /* Large purple circle top left */
+      width: 80vw;
+      height: 80vw;
+      background: radial-gradient(circle, rgba(234,204,255,0.7) 0%, rgba(234,204,255,0) 70%);
+      top: -30vw;
+      left: -20vw;
+    }
+
+    body::after {
+      /* Soft pink circle middle/right */
+      width: 70vw;
+      height: 70vw;
+      background: radial-gradient(circle, rgba(255,224,235,0.8) 0%, rgba(255,224,235,0) 70%);
+      bottom: -10vw;
+      right: -10vw;
+    }
     
-    .grid-background { 
-      position: fixed; inset: 0; pointer-events: none; z-index: -1; 
-      background-image: linear-gradient(var(--primary) 0.03 1px, transparent 1px), 
-                        linear-gradient(90deg, var(--primary) 0.03 1px, transparent 1px); 
-      background-size: 40px 40px; display: var(--fx-grid); opacity: 0.4;
-    }
-    .scanline { 
-      width: 100%; height: 100px; z-index: 99; position: fixed; bottom: 100%; 
-      background: linear-gradient(0deg, transparent 0%, var(--primary) 0.5, transparent 100%); 
-      animation: scanline 10s linear infinite; pointer-events: none; opacity: var(--fx-scan);
-    }
-    @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: -100px; } }
-
-    .container { width: 100%; max-width: 1100px; position: relative; z-index: 10; }
-    header { text-align: center; margin-bottom: 1.5rem; }
-    h1 { font-size: clamp(1.6rem, 7vw, 3rem); color: var(--primary); text-shadow: 0 0 15px var(--glow); text-transform: uppercase; letter-spacing: 4px; font-weight: 900; }
-    .status-text { font-size: 9px; font-weight: 700; color: var(--secondary); opacity: 0.8; letter-spacing: 0.5em; margin-top: 10px; text-transform: uppercase; }
-
-    .theme-selector-box { margin: 1.5rem auto; max-width: 320px; }
-    .theme-selector-box label { display: block; font-size: 8px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; text-align: center; letter-spacing: 2px; }
-    .theme-select {
-      width: 100%; background: var(--panel); border: var(--border); color: var(--primary);
-      padding: 12px; font-family: var(--font-main); font-size: 10px; cursor: pointer;
-      border-radius: var(--radius-lg); outline: none; transition: 0.3s; box-shadow: var(--shadow);
-      appearance: none; text-align-last: center;
+    .bg-shape.shape1 {
+      /* Light blue accent top right */
+      width: 60vw;
+      height: 60vw;
+      background: radial-gradient(circle, rgba(212,230,255,0.6) 0%, rgba(212,230,255,0) 70%);
+      top: -10vw;
+      right: -20vw;
     }
 
-    .actions-hub { margin: 1rem auto 2rem; text-align: center; display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
-    .action-group { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .bg-shape.shape2 {
+      /* Bottom center peach/pink blend */
+      width: 90vw;
+      height: 90vw;
+      background: radial-gradient(circle, rgba(255,235,240,0.6) 0%, rgba(255,235,240,0) 70%);
+      bottom: -40vw;
+      left: 10vw;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scroll::-webkit-scrollbar { width: 8px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.4); border-radius: 10px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(203, 168, 240, 0.6); border-radius: 10px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+    .container { 
+      width: 100%; 
+      max-width: 1100px; 
+      position: relative; 
+      z-index: 10; 
+      animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Core Animations */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(15px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .tab-content {
+      animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
     
-    .override-btn {
-      background: var(--panel); border: var(--border); color: var(--primary);
-      padding: 10px 24px; font-size: 9px; font-family: var(--font-main); cursor: pointer;
-      border-radius: var(--radius-lg); transition: 0.3s; text-transform: uppercase; letter-spacing: 1.5px;
-      box-shadow: var(--shadow);
-    }
-    .override-btn.active { background: var(--primary); color: var(--bg); font-weight: 900; box-shadow: 0 0 20px var(--glow); }
-    .clear-btn { border-color: var(--danger); color: var(--danger); }
-    .clear-btn:hover { background: rgba(255, 51, 51, 0.1); box-shadow: 0 0 15px rgba(255, 51, 51, 0.2); }
-
-    nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 2rem; }
-    .nav-btn { 
-      background: var(--panel); border: var(--border); color: var(--text-dim);
-      border-radius: var(--radius-lg); padding: 1rem 0.5rem; cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; gap: 0.5rem; transition: 0.3s;
-      box-shadow: var(--shadow);
-    }
-    .nav-btn.active { border-color: var(--primary); color: var(--primary); background: rgba(255,255,255,0.05); }
-    .nav-btn svg { width: 1.3rem; height: 1.3rem; }
-    .nav-btn span { font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-
-    .dashboard { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-    @media (min-width: 1024px) { .dashboard { grid-template-columns: 7fr 5fr; } }
-
-    .panel { 
-      background: var(--panel); border: var(--border); padding: 2.2rem; margin-bottom: 1.5rem; 
-      border-radius: var(--radius-lg); box-shadow: var(--shadow); position: relative;
-      backdrop-filter: blur(15px); transition: 0.3s;
-    }
-    .card-title { font-size: 10px; color: var(--primary); text-transform: uppercase; margin-bottom: 1.8rem; display: flex; align-items: center; gap: 0.75rem; border-bottom: 1px solid rgba(0, 0, 0, 0.05); padding-bottom: 0.5rem; font-weight: 900; letter-spacing: 1px; }
-    
-    .internal-block { 
-      background: rgba(0,0,0,0.03); padding: 1.5rem; border-radius: var(--radius-sm); 
-      border: var(--border); margin-bottom: 1.5rem; 
-    }
-    .block-header { 
-      font-size: 9px; color: var(--text-dim); margin-bottom: 1.25rem; 
-      display: flex; justify-content: space-between; font-weight: 800; 
-      text-transform: uppercase; letter-spacing: 2px;
-    }
-    .block-header span:first-child { color: var(--primary); }
-    
-    .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .input-field label { display: block; font-size: 8px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 0.75rem; font-weight: 800; letter-spacing: 1px; }
-    .input-field input { 
-      width: 100%; background: var(--input-bg); border: var(--border); 
-      border-radius: calc(var(--radius-sm)/2); padding: 1rem; color: var(--primary); 
-      font-family: inherit; outline: none; font-weight: 800; font-size: 16px; transition: 0.3s;
-    }
-    .input-field input:focus { border-color: var(--primary); box-shadow: 0 0 15px var(--glow); }
-
-    .experiment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 0.75rem; max-height: 180px; overflow-y: auto; margin: 1rem 0; padding: 10px; }
-    .expt-val { background: var(--input-bg); border: var(--border); border-radius: calc(var(--radius-sm)/4); padding: 0.6rem; color: var(--primary); text-align: center; outline: none; font-weight: 900; }
-
-    #hybrid-numExpts, #lab-numExpts {
-      width: 50px;
-      background: var(--input-bg);
-      border: var(--border);
-      border-radius: 8px;
-      color: var(--primary);
-      text-align: center;
-      font-family: inherit;
-      font-weight: 900;
-      padding: 4px 6px;
-      margin: 0 10px;
-      outline: none;
-      font-size: 12px;
-      display: inline-block;
-      vertical-align: middle;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    #hybrid-numExpts:focus, #lab-numExpts:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 10px var(--glow);
-      transform: scale(1.05);
-    }
-
-    .results-panel { 
-      background: var(--panel); border: var(--border); padding: 2.5rem; min-height: 640px; 
-      border-radius: var(--radius-lg); box-shadow: var(--shadow); position: relative; border-top: 6px solid var(--primary);
-      backdrop-filter: blur(20px);
-    }
-    @media (min-width: 1024px) { .results-panel { position: sticky; top: 1.5rem; } }
-    
-    .score-big { font-size: 5rem; font-weight: 900; color: var(--primary); line-height: 1; }
-    .score-max-unit { font-size: 1.5rem; color: var(--text-dim); font-weight: 700; }
-    .regulation-tag { font-size: 8px; color: var(--secondary); border: 1px solid; padding: 4px 10px; display: inline-block; margin-top: 15px; font-weight: 900; border-radius: 50px; text-transform: uppercase; letter-spacing: 1px; }
-
-    .grade-row { 
-      display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; 
-      background: var(--row-bg); margin-bottom: 0.8rem; border-radius: var(--radius-sm); 
-      border: 1px solid transparent; transition: all 0.4s;
-    }
-    .status-impossible { border-color: var(--danger) !important; color: var(--danger); background: rgba(255, 0, 0, 0.02); }
-    .status-hard { border-color: var(--warning) !important; color: var(--warning); background: rgba(184, 134, 11, 0.02); }
-
-    .grade-label { font-size: 1.6rem; font-weight: 900; color: var(--primary); line-height: 1; font-family: var(--font-main); }
-    .grade-points { font-size: 9px; color: var(--gold-point); text-transform: uppercase; font-weight: 800; margin-top: 4px; display: block; font-family: var(--font-main); }
-
-    .req-val { font-size: 1.4rem; font-weight: 900; display: block; text-align: right; font-family: var(--font-main); }
-    .txt-impossible { color: var(--danger); }
-    .txt-hard { color: var(--warning); }
-    .combined-see { font-size: 9px; color: var(--text-dim); font-weight: 700; display: block; margin-top: 4px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
-
-    .bracket { position: absolute; width: 15px; height: 15px; border: 3px solid var(--primary); display: var(--bracket); opacity: 0.4; }
-    .tl { top: 15px; left: 15px; border-right: 0; border-bottom: 0; } .tr { top: 15px; right: 15px; border-left: 0; border-bottom: 0; }
-    .bl { bottom: 15px; left: 15px; border-right: 0; border-top: 0; } .br { bottom: 15px; right: 15px; border-left: 0; border-top: 0; }
-
-    #target-list { min-height: 250px; }
-    .watermark { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05); text-align: center; color: var(--text-dim); font-size: 9px; letter-spacing: 0.4em; font-weight: 800; }
-    
-    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-    input[type=number] { -moz-appearance: textfield; }
-    .hidden { display: none !important; }
-    .custom-scroll::-webkit-scrollbar { width: 4px; }
-    .custom-scroll::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-
-    /* New External Link Button Style */
-    .external-link-box {
-      display: block;
-      text-decoration: none;
-      background: rgba(0,0,0,0.2);
-      border: 1px dashed var(--primary);
-      padding: 1.5rem;
-      border-radius: var(--radius-sm);
-      margin-bottom: 1.5rem;
-      text-align: center;
-      transition: all 0.3s ease;
+    header { 
+      text-align: center; 
+      margin-bottom: 2.5rem; 
+      background: var(--glass-bg);
+      padding: 2.5rem 2rem;
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(20px) saturate(120%);
+      -webkit-backdrop-filter: blur(20px) saturate(120%);
+      border: var(--glass-border);
+      box-shadow: var(--shadow-soft);
       position: relative;
       overflow: hidden;
     }
-    .external-link-box:hover {
-      background: var(--primary);
-      box-shadow: 0 0 20px var(--glow);
-      border-style: solid;
-    }
-    .external-link-box:hover .ext-title,
-    .external-link-box:hover .ext-sub {
-      color: var(--bg);
-    }
-    .ext-title { font-size: 11px; font-weight: 900; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; }
-    .ext-sub { font-size: 8px; font-weight: 700; color: var(--text-dim); margin-top: 6px; letter-spacing: 1px; transition: 0.3s; }
 
-    /* POPUP SYSTEM */
+    /* Shine effect for header */
+    header::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 50%; height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      animation: shine 8s infinite;
+    }
+
+    @keyframes shine {
+      0% { left: -100%; }
+      20% { left: 200%; }
+      100% { left: 200%; }
+    }
+    
+    h1 { 
+      font-size: clamp(2.2rem, 6vw, 3.5rem); 
+      background: -webkit-linear-gradient(45deg, #a37bc7, #9abaf0, #e8a0c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800; 
+      letter-spacing: -1.5px; 
+      margin-bottom: 0.5rem;
+    }
+    
+    .status-text { 
+      font-size: 0.95rem; 
+      font-weight: 700; 
+      color: var(--text-muted); 
+      background: var(--glass-highlight);
+      padding: 6px 16px;
+      border-radius: 50px;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+
+    .actions-hub { 
+      margin: 2rem auto 0; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      gap: 1.5rem; 
+      flex-wrap: wrap; 
+    }
+    
+    .action-group { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 8px; 
+    }
+    
+    .action-group span {
+      font-size: 0.75rem; 
+      text-transform: uppercase; 
+      color: var(--text-muted); 
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .btn {
+      background: var(--glass-highlight); 
+      border: var(--glass-border); 
+      color: #8c6eb5; /* Darker primary for contrast */
+      padding: 12px 28px; 
+      font-size: 0.95rem; 
+      font-family: inherit; 
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: var(--radius-lg); 
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .btn:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px) scale(1.02);
+      background: #fff;
+    }
+    
+    .btn.active { 
+      background: linear-gradient(135deg, var(--primary), #a6bbf0); 
+      color: #fff; 
+      border-color: transparent;
+      box-shadow: 0 8px 25px rgba(203, 168, 240, 0.4);
+    }
+
+    .btn-danger { color: #d66565; }
+    .btn-danger:hover { 
+      background: linear-gradient(135deg, #f29b9b, #e07979); 
+      color: #fff; 
+      border-color: transparent; 
+      box-shadow: 0 8px 25px rgba(242, 155, 155, 0.4);
+    }
+
+    nav { 
+      display: grid; 
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 1.2rem; 
+      margin-bottom: 2.5rem; 
+    }
+    
+    .nav-btn { 
+      background: var(--glass-bg); 
+      border: var(--glass-border); 
+      color: var(--text-muted);
+      border-radius: var(--radius-lg); 
+      padding: 1.5rem 0.5rem; 
+      cursor: pointer;
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 0.75rem; 
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    
+    .nav-btn:hover {
+      color: #8c6eb5;
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      background: rgba(255,255,255,0.85);
+    }
+    
+    .nav-btn.active { 
+      border-color: rgba(255,255,255,1); 
+      color: #fff; 
+      background: linear-gradient(135deg, rgba(203, 168, 240, 0.9), rgba(255, 214, 230, 0.9)); 
+      box-shadow: 0 12px 30px rgba(203, 168, 240, 0.35);
+    }
+    
+    .nav-btn svg { width: 1.8rem; height: 1.8rem; stroke-width: 2.2; }
+    .nav-btn span { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.5px; }
+    
+    @media (max-width: 768px) {
+      nav { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .nav-btn { flex-direction: row; justify-content: center; padding: 1.2rem; }
+      .nav-btn svg { width: 1.5rem; height: 1.5rem; }
+    }
+
+    .dashboard { 
+      display: grid; 
+      grid-template-columns: 1fr; 
+      gap: 2.5rem; 
+    }
+    @media (min-width: 1024px) { 
+      .dashboard { grid-template-columns: 7fr 5fr; } 
+    }
+
+    .panel { 
+      background: var(--glass-bg); 
+      border: var(--glass-border); 
+      padding: 2.5rem; 
+      margin-bottom: 1.5rem; 
+      border-radius: var(--radius-lg); 
+      box-shadow: var(--glass-shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.3); 
+      backdrop-filter: blur(30px) saturate(140%);
+      -webkit-backdrop-filter: blur(30px) saturate(140%);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .panel:hover {
+      box-shadow: var(--shadow-soft), inset 0 0 0 1px rgba(255, 255, 255, 0.5); 
+      transform: translateY(-2px);
+    }
+    
+    .card-title { 
+      font-size: 1.3rem; 
+      color: #7b59a6; 
+      margin-bottom: 1.5rem; 
+      display: flex; 
+      align-items: center; 
+      gap: 0.75rem; 
+      border-bottom: 2px solid rgba(255,255,255,0.5); 
+      padding-bottom: 1rem; 
+      font-weight: 800; 
+      letter-spacing: -0.5px;
+    }
+    
+    .internal-block { 
+      background: rgba(255,255,255,0.3); 
+      padding: 1.5rem; 
+      border-radius: var(--radius-sm); 
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.4); 
+      box-shadow: inset 0 4px 10px rgba(255,255,255,0.4);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .block-header { 
+      font-size: 0.95rem; 
+      color: var(--text-muted); 
+      margin-bottom: 1.2rem; 
+      display: flex; 
+      justify-content: space-between; 
+      font-weight: 800; 
+    }
+    .block-header span:first-child { color: var(--text); }
+    
+    .input-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 1.5rem; 
+    }
+    
+    .input-field label { 
+      display: block; 
+      font-size: 0.85rem; 
+      color: var(--text-muted); 
+      margin-bottom: 0.5rem; 
+      font-weight: 700; 
+    }
+    
+    .input-field input, .custom-select { 
+      width: 100%; 
+      background: rgba(255,255,255,0.6); 
+      border: 2px solid rgba(255,255,255,0.9); 
+      border-radius: 50px; 
+      padding: 0.9rem 1.2rem; 
+      color: var(--text); 
+      font-family: inherit; 
+      outline: none; 
+      font-weight: 700; 
+      font-size: 1.05rem; 
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02), inset 0 2px 5px rgba(255,255,255,0.5);
+    }
+    
+    .input-field input:focus, .custom-select:focus { 
+      border-color: var(--primary); 
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 0 0 4px rgba(203, 168, 240, 0.25), 0 6px 15px rgba(0,0,0,0.05); 
+      transform: translateY(-2px);
+    }
+
+    .input-field input::placeholder { color: #b8b8cc; font-weight: 500; }
+
+    .experiment-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); 
+      gap: 0.85rem; 
+      max-height: 200px; 
+      overflow-y: auto; 
+      margin-top: 0.75rem; 
+      padding-right: 8px;
+    }
+    
+    .expt-val { text-align: center; }
+
+    .results-panel { 
+      background: var(--glass-bg); 
+      border: var(--glass-border); 
+      padding: 2.5rem; 
+      min-height: 640px; 
+      border-radius: var(--radius-lg); 
+      box-shadow: var(--glass-shadow), inset 0 0 0 1px rgba(255, 255, 255, 0.3); 
+      border-top: 6px solid rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(30px) saturate(140%);
+      -webkit-backdrop-filter: blur(30px) saturate(140%);
+    }
+    
+    @media (min-width: 1024px) { 
+      .results-panel { position: sticky; top: 2rem; } 
+    }
+    
+    .score-big { 
+      font-size: 5rem; 
+      font-weight: 800; 
+      background: -webkit-linear-gradient(45deg, #8a6bb5, #7da2e8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1; 
+      letter-spacing: -3px;
+    }
+    
+    .score-max-unit { 
+      font-size: 1.5rem; 
+      color: var(--text-muted); 
+      font-weight: 700; 
+    }
+    
+    .regulation-tag { 
+      font-size: 0.85rem; 
+      color: #55996c; 
+      background: rgba(141, 214, 165, 0.25);
+      padding: 8px 16px; 
+      display: inline-block; 
+      margin-top: 15px; 
+      font-weight: 800; 
+      border-radius: 50px; 
+      border: 1px solid rgba(141, 214, 165, 0.3);
+    }
+
+    .grade-row { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 1.2rem 1.5rem; 
+      background: rgba(255,255,255,0.6); 
+      margin-bottom: 0.85rem; 
+      border-radius: var(--radius-sm); 
+      border: 1px solid rgba(255,255,255,0.7); 
+      transition: all 0.3s ease;
+    }
+
+    .grade-row:hover {
+      background: rgba(255,255,255,0.85);
+      transform: translateX(4px);
+    }
+    
+    .status-impossible { border-color: rgba(240,137,137,0.4) !important; background: rgba(240,137,137,0.1); }
+    .status-hard { border-color: rgba(247,203,119,0.4) !important; background: rgba(247,203,119,0.1); }
+
+    .grade-label { 
+      font-size: 1.6rem; 
+      font-weight: 800; 
+      color: var(--text); 
+    }
+    
+    .grade-points { 
+      font-size: 0.85rem; 
+      color: var(--text-muted); 
+      font-weight: 700; 
+      margin-top: 4px; 
+      display: block; 
+    }
+
+    .req-val { 
+      font-size: 1.6rem; 
+      font-weight: 800; 
+      display: block; 
+      text-align: right; 
+    }
+    
+    .txt-impossible { color: #d66565; }
+    .txt-hard { color: #d19e38; }
+    
+    .combined-see { 
+      font-size: 0.75rem; 
+      color: var(--text-muted); 
+      font-weight: 700; 
+      display: block; 
+      margin-top: 4px; 
+    }
+
+    .sgpa-selector-btn {
+      display: block;
+      text-decoration: none;
+      background: linear-gradient(135deg, rgba(203, 168, 240, 0.8) 0%, rgba(205, 224, 245, 0.8) 100%);
+      color: #4a4a5c;
+      padding: 1.3rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 1.15rem;
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: 0 4px 15px rgba(203, 168, 240, 0.2);
+    }
+    
+    .sgpa-selector-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(203, 168, 240, 0.4);
+      background: linear-gradient(135deg, rgba(203, 168, 240, 0.95) 0%, rgba(205, 224, 245, 0.95) 100%);
+      color: #333;
+    }
+
+    .course-category {
+      font-size: 0.85rem;
+      color: #8a6bb5;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 1.8rem 0 0.8rem 0;
+      border-bottom: 2px solid rgba(203, 168, 240, 0.3);
+      padding-bottom: 6px;
+    }
+
+    .course-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.5);
+      padding: 1.1rem 1.5rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 0.8rem;
+      border: 1px solid rgba(255,255,255,0.8);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0; 
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    
+    .course-item:hover { 
+      background: rgba(255,255,255,0.85); 
+      transform: translateX(5px) scale(1.01); 
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05); 
+    }
+    
+    .course-info { flex: 1; padding-right: 1rem; }
+    .course-name { font-weight: 700; font-size: 0.95rem; color: var(--text); margin-bottom: 5px; line-height: 1.3;}
+    .course-credits { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; }
+
+    .course-grade-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237b59a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 1.2em;
+      width: 110px; padding: 0.7rem 2.2rem 0.7rem 1rem; border-radius: 50px; border: 2px solid rgba(255,255,255,0.9);
+      background-color: rgba(255,255,255,0.6); color: #7b59a6; font-weight: 800; font-family: inherit; font-size: 1rem;
+      outline: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02), inset 0 2px 4px rgba(255,255,255,0.5);
+    }
+    .course-grade-select:focus { 
+      border-color: var(--primary); 
+      box-shadow: 0 0 0 4px rgba(203, 168, 240, 0.25), 0 8px 20px rgba(0,0,0,0.05); 
+      background-color: rgba(255,255,255,0.95); 
+      transform: translateY(-2px); 
+    }
+    .course-grade-select:hover {
+      background-color: rgba(255,255,255,0.85);
+    }
+
+    .sgpa-summary-box {
+      background: rgba(255,255,255,0.6); padding: 1.5rem; border-radius: var(--radius-sm);
+      margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .sgpa-stat-title { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-bottom: 6px; }
+    .sgpa-stat-value { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+
     .popup-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-      z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s;
+      position: fixed; inset: 0; background: rgba(74, 74, 92, 0.3); backdrop-filter: blur(12px);
+      z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;
     }
     .popup-overlay.active { display: flex; opacity: 1; }
+    
     .popup-content {
-      background: var(--panel); border: 1px solid var(--primary); padding: 2rem;
-      width: 90%; max-width: 400px; border-radius: var(--radius-lg);
-      box-shadow: 0 0 30px var(--glow); transform: scale(0.9); transition: transform 0.3s;
+      background: rgba(255, 255, 255, 0.75); padding: 3rem 2.5rem;
+      width: 90%; max-width: 550px; border-radius: var(--radius-lg);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.15); transform: scale(0.95) translateY(10px); 
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       text-align: center; position: relative;
+      border: var(--glass-border);
+      backdrop-filter: blur(25px) saturate(150%);
     }
-    .popup-overlay.active .popup-content { transform: scale(1); }
-    .sem-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    .popup-overlay.active .popup-content { transform: scale(1) translateY(0); }
+    
+    .sem-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-top: 2rem; }
+    
     .sem-btn {
-      background: rgba(255,255,255,0.05); border: var(--border); color: var(--primary);
-      padding: 1rem; border-radius: var(--radius-sm); font-family: var(--font-main);
-      font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase;
-      font-size: 12px; letter-spacing: 1px;
+      background: rgba(255,255,255,0.6); border: 2px solid rgba(255,255,255,0.8); color: var(--text);
+      padding: 1.2rem; border-radius: var(--radius-sm); font-family: inherit; font-size: 1rem;
+      font-weight: 700; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
     }
-    .sem-btn:hover { background: var(--primary); color: var(--bg); box-shadow: 0 0 15px var(--glow); }
-    .sem-btn.locked { border-color: var(--text-dim); color: var(--text-dim); opacity: 0.7; }
-    .sem-btn.locked:hover { background: rgba(255,50,50,0.1); border-color: var(--danger); color: var(--danger); box-shadow: none; }
+    
+    .sem-btn:hover { 
+      background: linear-gradient(135deg, rgba(203, 168, 240, 0.9) 0%, rgba(255, 214, 230, 0.9) 100%); 
+      color: #fff; border-color: transparent;
+      transform: translateY(-4px) scale(1.03); box-shadow: 0 10px 25px rgba(203, 168, 240, 0.3);
+    }
+    
     .close-popup {
-      position: absolute; top: 10px; right: 10px; background: none; border: none;
-      color: var(--danger); font-size: 1.5rem; cursor: pointer;
+      position: absolute; top: 15px; right: 20px; background: rgba(255,255,255,0.5); border: none;
+      color: var(--text-muted); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items:center; justify-content:center;
+      cursor: pointer; transition: 0.2s; font-weight: 400; font-size: 1.5rem;
     }
-    #popup-status { min-height: 15px; margin-top: 15px; color: var(--danger); transition: 0.3s; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+    .close-popup:hover { color: #fff; background: var(--danger); transform: rotate(90deg); }
+
+    .watermark { 
+      margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.6); 
+      text-align: center; color: var(--text-muted); font-size: 0.85rem; font-weight: 700; 
+    }
+
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+    .hidden { display: none !important; }
   </style>
 </head>
-<body class="theme-minimal">
+<body>
 
-  <canvas id="fx-canvas"></canvas>
-  <div class="grid-background"></div>
-  <div class="scanline"></div>
+  <!-- Background Decorative Shapes -->
+  <div class="bg-shape shape1"></div>
+  <div class="bg-shape shape2"></div>
 
   <div class="container">
     <header>
-      <h1>GRADE PILOT</h1>
-      <div class="status-text">// Dr. NGP IT R2022 // EEE 25-29 //</div>
+      <h1>Grade Pilot</h1>
+      <div class="status-text">Dr. N.G.P. Institute of Technology &bull; EEE R2022 Curriculum</div>
       
-      <div class="theme-selector-box">
-        <label>Architecture Pulse</label>
-        <select class="theme-select" id="themeEngine">
-          <optgroup label="Smooth Architectures (Pellet Style)">
-            <option value="minimal" selected>Minimalist (Glass White)</option>
-            <option value="sakura">Sakura Blossom (Petals)</option>
-            <option value="oceanic">Oceanic Deep (Bubbles)</option>
-            <option value="nature">Nature Emerald (Leaves)</option>
-            <option value="aura">Aura Purple (Orbs)</option>
-          </optgroup>
-          <optgroup label="Tuff Architectures (Cyberpunk)">
-            <option value="default">Cyber Green (Original)</option>
-            <option value="matrix">Matrix Code (Digital Rain)</option>
-            <option value="bloodmoon">Bloodmoon (Embers)</option>
-            <option value="cobalt">Cobalt Strike (Streams)</option>
-            <option value="neon">Neon Overdrive (Vibrant)</option>
-          </optgroup>
-        </select>
-      </div>
-
       <div class="actions-hub">
         <div class="action-group">
-          <span style="font-size: 9px; text-transform: uppercase; color: var(--text-dim); letter-spacing: 1px;">Internal Override</span>
-          <button class="override-btn" id="toggleOverride">Direct Entry Mode</button>
+          <span>Mode</span>
+          <button class="btn" id="toggleOverride">Direct Entry Mode</button>
         </div>
         <div class="action-group">
-          <span style="font-size: 8px; text-transform: uppercase; color: var(--text-dim); letter-spacing: 1px;">Clear Section</span>
-          <button class="override-btn clear-btn" id="clearSection">Neural Wipe</button>
+          <span>Reset</span>
+          <button class="btn btn-danger" id="clearSection">Clear Form</button>
         </div>
       </div>
     </header>
 
     <nav>
       <button class="nav-btn active" data-tab="theory">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V5H6.5A2.5 2.5 0 0 0 4 7.5v12z"></path></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20V5H6.5A2.5 2.5 0 0 0 4 7.5v12z"></path></svg>
         <span>Theory</span>
       </button>
       <button class="nav-btn" data-tab="hybrid">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
         <span>Hybrid</span>
       </button>
       <button class="nav-btn" data-tab="lab">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><path d="M9 3h6M10 3v6.2c0 .5-.2 1-.6 1.4L6 14.5c-.6.6-.9 1.4-.9 2.2 0 1.8 1.5 3.3 3.3 3.3h7.2c1.8 0 3.3-1.5 3.3-3.3 0-.8-.3-1.6-.9-2.2L14.6 11c-.4-.4-.6-.9-.6-1.4V3"></path><path d="M8.5 15h7"></path></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"></path><path d="M10 3v6.2c0 .5-.2 1-.6 1.4L6 14.5c-.6.6-.9 1.4-.9 2.2 0 1.8 1.5 3.3 3.3 3.3h7.2c1.8 0 3.3-1.5 3.3-3.3 0-.8-.3-1.6-.9-2.2L14.6 11c-.4-.4-.6-.9-.6-1.4V3"></path></svg>
         <span>Lab</span>
       </button>
       <button class="nav-btn" data-tab="sgpa">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-        <span>SGPA</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        <span>SGPA Planner</span>
       </button>
     </nav>
 
@@ -358,28 +686,28 @@
         <div id="tab-theory" class="tab-content">
           <div class="direct-panel hidden" id="direct-theory">
             <div class="panel">
-              <div class="card-title">Direct CIE Input (Theory)</div>
+              <div class="card-title">Direct Internal Input</div>
               <div class="internal-block">
-                <div class="block-header"><span>OVERRIDE</span><span id="theory-max-label">/40</span></div>
-                <div class="input-field"><label>Final Internal Score</label><input type="number" id="theory-direct-cie" placeholder="00"></div>
+                <div class="block-header"><span>Final Internal Score</span><span id="theory-max-label">/40</span></div>
+                <div class="input-field"><input type="number" id="theory-direct-cie" placeholder="Enter out of 40"></div>
               </div>
             </div>
           </div>
           <div class="detailed-panel" id="detailed-theory">
             <div class="panel">
-              <div class="card-title">Detailed CIE Breakdown</div>
+              <div class="card-title">Theory Assessment Breakdown</div>
               <div class="internal-block">
-                <div class="block-header"><span>ASSESSMENT I</span><span>/100</span></div>
+                <div class="block-header"><span>Assessment I</span><span>Max: 100</span></div>
                 <div class="input-grid">
-                  <div class="input-field"><label>Test [60]</label><input type="number" id="theory-i1" placeholder="00"></div>
-                  <div class="input-field"><label>Assignment [40]</label><input type="number" id="theory-i1ass" placeholder="00"></div>
+                  <div class="input-field"><label>Test (60%)</label><input type="number" id="theory-i1" placeholder="0"></div>
+                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="theory-i1ass" placeholder="0"></div>
                 </div>
               </div>
               <div class="internal-block">
-                <div class="block-header"><span>ASSESSMENT II</span><span>/100</span></div>
+                <div class="block-header"><span>Assessment II</span><span>Max: 100</span></div>
                 <div class="input-grid">
-                  <div class="input-field"><label>Test [60]</label><input type="number" id="theory-i2" placeholder="00"></div>
-                  <div class="input-field"><label>Assignment [40]</label><input type="number" id="theory-i2ass" placeholder="00"></div>
+                  <div class="input-field"><label>Test (60%)</label><input type="number" id="theory-i2" placeholder="0"></div>
+                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="theory-i2ass" placeholder="0"></div>
                 </div>
               </div>
             </div>
@@ -390,10 +718,10 @@
         <div id="tab-hybrid" class="tab-content hidden">
           <div class="direct-panel hidden" id="direct-hybrid">
             <div class="panel">
-              <div class="card-title">Direct CIE Input (Hybrid)</div>
+              <div class="card-title">Direct Internal Input</div>
               <div class="internal-block">
-                <div class="block-header"><span>OVERRIDE</span><span id="hybrid-max-label">/50</span></div>
-                <div class="input-field"><label>Final Internal Score</label><input type="number" id="hybrid-direct-cie" placeholder="00"></div>
+                <div class="block-header"><span>Final Internal Score</span><span id="hybrid-max-label">/50</span></div>
+                <div class="input-field"><input type="number" id="hybrid-direct-cie" placeholder="Enter out of 50"></div>
               </div>
             </div>
           </div>
@@ -401,32 +729,41 @@
             <div class="panel">
               <div class="card-title">Hybrid Theory Component</div>
               <div class="internal-block">
-                <div class="block-header"><span>ASSESSMENT I</span><span>/100</span></div>
+                <div class="block-header"><span>Assessment I</span><span>Max: 100</span></div>
                 <div class="input-grid">
-                  <div class="input-field"><label>Test [60]</label><input type="number" id="hybrid-i1" placeholder="00"></div>
-                  <div class="input-field"><label>Assignment [40]</label><input type="number" id="hybrid-i1ass" placeholder="00"></div>
+                  <div class="input-field"><label>Test (60%)</label><input type="number" id="hybrid-i1" placeholder="0"></div>
+                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="hybrid-i1ass" placeholder="0"></div>
                 </div>
               </div>
               <div class="internal-block">
-                <div class="block-header"><span>ASSESSMENT II</span><span>/100</span></div>
+                <div class="block-header"><span>Assessment II</span><span>Max: 100</span></div>
                 <div class="input-grid">
-                  <div class="input-field"><label>Test [60]</label><input type="number" id="hybrid-i2" placeholder="00"></div>
-                  <div class="input-field"><label>Assignment [40]</label><input type="number" id="hybrid-i2ass" placeholder="00"></div>
+                  <div class="input-field"><label>Test (60%)</label><input type="number" id="hybrid-i2" placeholder="0"></div>
+                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="hybrid-i2ass" placeholder="0"></div>
                 </div>
               </div>
             </div>
             <div class="panel">
               <div class="card-title">Hybrid Lab Component</div>
-              <div class="input-field"><label>Model Lab Exam [100 Max]</label><input type="number" id="hybrid-model" placeholder="00"></div>
-              <div class="input-field" style="margin-top:1.5rem;">
-                <label>Experiments [Avg of <input type="number" id="hybrid-numExpts" value="1" min="1" max="15">]</label>
+              <div class="input-field">
+                <label>Model Lab Exam (Max 100)</label>
+                <input type="number" id="hybrid-model" placeholder="0">
+              </div>
+              <div class="input-field" style="margin-top:1.8rem;">
+                <label style="display:flex; justify-content:space-between; align-items:center;">
+                  <span>Experiments</span>
+                  <span style="font-weight: normal; text-transform: none; display:flex; align-items:center; gap:8px;">Total Count: <input type="number" id="hybrid-numExpts" value="1" min="1" max="15" style="width:60px; padding:4px 8px; font-size:14px;"></span>
+                </label>
                 <div id="hybrid-expt-list" class="experiment-grid custom-scroll"></div>
               </div>
             </div>
           </div>
-          <div class="panel" style="margin-top: 1.5rem;">
-            <div class="card-title">Hybrid Practical SEE</div>
-            <div class="input-field"><label>Semester Lab Mark [100 Max]</label><input type="number" id="hybrid-pSee" placeholder="00"></div>
+          <div class="panel">
+            <div class="card-title">Practical SEE Expected Mark</div>
+            <div class="input-field">
+              <label>Semester Lab Mark (Max 100)</label>
+              <input type="number" id="hybrid-pSee" placeholder="0">
+            </div>
           </div>
         </div>
 
@@ -434,19 +771,25 @@
         <div id="tab-lab" class="tab-content hidden">
           <div class="direct-panel hidden" id="direct-lab">
             <div class="panel">
-              <div class="card-title">Direct CIE Input (Lab)</div>
+              <div class="card-title">Direct Internal Input</div>
               <div class="internal-block">
-                <div class="block-header"><span>OVERRIDE</span><span id="lab-max-label">/60</span></div>
-                <div class="input-field"><label>Final Internal Score</label><input type="number" id="lab-direct-cie" placeholder="00"></div>
+                <div class="block-header"><span>Final Internal Score</span><span id="lab-max-label">/60</span></div>
+                <div class="input-field"><input type="number" id="lab-direct-cie" placeholder="Enter out of 60"></div>
               </div>
             </div>
           </div>
           <div class="detailed-panel" id="detailed-lab">
             <div class="panel">
-              <div class="card-title">Lab Detailed Assessment</div>
-              <div class="input-field"><label>Model Lab Exam [100 Max]</label><input type="number" id="lab-model" placeholder="00"></div>
-              <div class="input-field" style="margin-top:1.5rem;">
-                <label>Experiments [Avg of <input type="number" id="lab-numExpts" value="1" min="1" max="15">]</label>
+              <div class="card-title">Lab Assessment</div>
+              <div class="input-field">
+                <label>Model Lab Exam (Max 100)</label>
+                <input type="number" id="lab-model" placeholder="0">
+              </div>
+              <div class="input-field" style="margin-top:1.8rem;">
+                <label style="display:flex; justify-content:space-between; align-items:center;">
+                  <span>Experiments</span>
+                  <span style="font-weight: normal; text-transform: none; display:flex; align-items:center; gap:8px;">Total Count: <input type="number" id="lab-numExpts" value="1" min="1" max="15" style="width:60px; padding:4px 8px; font-size:14px;"></span>
+                </label>
                 <div id="lab-expt-list" class="experiment-grid custom-scroll"></div>
               </div>
             </div>
@@ -456,45 +799,72 @@
         <!-- Tab: SGPA -->
         <div id="tab-sgpa" class="tab-content hidden">
           <div class="panel">
-            <div class="card-title">GPA Data Core</div>
+            <div class="card-title">Curriculum Planner</div>
 
             <!-- POPUP TRIGGER -->
-            <div class="external-link-box" id="open-sem-popup" style="cursor: pointer;">
-              <div class="ext-title">Select Semester Data</div>
-              <div class="ext-sub">[ EEE DEPARTMENT ARCHIVES ]</div>
+            <div class="sgpa-selector-btn" id="open-sem-popup">
+              Select Semester Curriculum
             </div>
 
-            <div id="sgpa-list"></div>
-            <button id="add-course" style="width:100%; padding:1rem; background:rgba(0,0,0,0.03); border:var(--border); color:var(--primary); cursor:pointer; margin-top:1.5rem; font-family:inherit; border-radius: var(--radius-lg); font-weight: 700;">+ REGISTER NEW COURSE</button>
+            <h3 id="current-sem-title" style="margin-bottom: 1rem; color: #7b59a6; font-weight: 800; text-align: center; display: none; font-size: 1.4rem;">Semester I</h3>
+
+            <div id="sgpa-course-list">
+              <!-- Courses populated dynamically from JS -->
+            </div>
           </div>
         </div>
       </div>
 
       <div class="results-panel">
-        <div class="bracket tl"></div><div class="bracket tr"></div>
-        <div class="bracket bl"></div><div class="bracket br"></div>
-
+        
+        <!-- Standard Prediction Results -->
         <div id="std-results">
-          <div class="card-title">Internal Score Performance</div>
-          <div style="display:flex; align-items:baseline; gap:0.75rem; margin-bottom:1.5rem;">
+          <div class="card-title">Internal Performance</div>
+          <div style="display:flex; align-items:baseline; gap:0.75rem; margin-bottom:1rem;">
             <span class="score-big" id="cie-val">00</span>
             <span id="cie-max" class="score-max-unit">/40</span>
           </div>
-          <div class="regulation-tag">R2022 CL 15.1: 45% SEE PASS RULE</div>
+          <div class="regulation-tag">R2022 CL 15.1: 45% SEE Pass Rule</div>
           
-          <div style="margin-top:3.5rem;">
-            <div class="card-title">Required Paper Scores</div>
-            <div id="target-list" class="custom-scroll"></div>
+          <div style="margin-top:2.5rem;">
+            <div class="card-title">Required SEE Targets</div>
+            <div id="target-list" class="custom-scroll" style="max-height: 400px; overflow-y: auto; padding-right: 5px;"></div>
           </div>
         </div>
 
-        <div id="sgpa-results" class="hidden" style="text-align:center;">
-          <div class="card-title" style="justify-content:center;">Semester SGPA Result</div>
-          <div class="score-big" style="font-size:6rem; margin:2rem 0;" id="sgpa-val">0.00</div>
-          <div class="regulation-tag">BE EEE DATA COMPLIANT</div>
+        <!-- SGPA Live Summary Results -->
+        <div id="sgpa-results" class="hidden">
+          <div class="card-title">Semester Summary</div>
+          
+          <div class="sgpa-summary-box" style="background: rgba(203, 168, 240, 0.2); border: 1px solid rgba(203, 168, 240, 0.4); box-shadow: 0 4px 15px rgba(203, 168, 240, 0.1);">
+            <div class="sgpa-stat-title" style="color: #7b59a6;">Current SGPA</div>
+            <div class="score-big" style="font-size:3.5rem; margin:0; letter-spacing: -1px;" id="sgpa-val">0.00</div>
+          </div>
+
+          <div class="sgpa-summary-box">
+            <div>
+              <div class="sgpa-stat-title">Total Credits</div>
+              <div class="sgpa-stat-value" id="sgpa-credits">0</div>
+            </div>
+            <div style="text-align: right;">
+              <div class="sgpa-stat-title">Total Points</div>
+              <div class="sgpa-stat-value" id="sgpa-points">0</div>
+            </div>
+          </div>
+          
+          <div class="sgpa-summary-box">
+            <div>
+              <div class="sgpa-stat-title">Courses Completed</div>
+              <div class="sgpa-stat-value" id="sgpa-completed">0 / 0</div>
+            </div>
+            <div style="text-align: right;">
+              <div class="sgpa-stat-title">Performance</div>
+              <div class="sgpa-stat-value" id="sgpa-performance" style="color: #55996c; font-size: 1.1rem;">N/A</div>
+            </div>
+          </div>
         </div>
 
-        <div class="watermark">// Dr. NGP IT R2022 // EEE 25-29 //</div>
+        <div class="watermark">Designed for EEE Curriculum &bull; Real-time Insights</div>
       </div>
     </div>
   </div>
@@ -503,63 +873,23 @@
   <div class="popup-overlay" id="sem-popup">
     <div class="popup-content">
       <button class="close-popup" id="close-popup-btn">&times;</button>
-      <div class="card-title" style="justify-content:center; margin-bottom:0.5rem;">ACCESS TERMINAL</div>
-      <div style="font-size:9px; color:var(--text-dim); letter-spacing:1px; margin-bottom:1.5rem;">SELECT DATA STREAM</div>
+      <h2 style="color: #7b59a6; font-weight: 800; margin-bottom: 0.5rem; font-size: 1.8rem; letter-spacing: -0.5px;">Select Semester</h2>
+      <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 600;">Choose a semester to load exact curriculum courses.</p>
       
       <div class="sem-grid">
-        <button class="sem-btn">SEMESTER 01</button>
-        <button class="sem-btn locked">SEMESTER 02</button>
-        <button class="sem-btn locked">SEMESTER 03</button>
-        <button class="sem-btn locked">SEMESTER 04</button>
-        <button class="sem-btn locked">SEMESTER 05</button>
-        <button class="sem-btn locked">SEMESTER 06</button>
-        <button class="sem-btn locked">SEMESTER 07</button>
-        <button class="sem-btn locked">SEMESTER 08</button>
+        <button class="sem-btn" data-sem="0">Semester I</button>
+        <button class="sem-btn" data-sem="1">Semester II</button>
+        <button class="sem-btn" data-sem="2">Semester III</button>
+        <button class="sem-btn" data-sem="3">Semester IV</button>
+        <button class="sem-btn" data-sem="4">Semester V</button>
+        <button class="sem-btn" data-sem="5">Semester VI</button>
+        <button class="sem-btn" data-sem="6">Semester VII</button>
+        <button class="sem-btn" data-sem="7">Semester VIII</button>
       </div>
-      <div id="popup-status"></div>
     </div>
   </div>
 
   <script>
-    // --- FX ENGINE ---
-    const canvas = document.getElementById('fx-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
-    class Particle {
-      constructor(type) { this.init(type); }
-      init(type) {
-        this.type = type; this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 3 + 1; this.speed = Math.random() * 1.5 + 0.5; this.opacity = Math.random() * 0.4 + 0.1;
-        if (type === 'matrix') { this.y = Math.random() * -canvas.height; this.char = Math.random() > 0.5 ? '1' : '0'; this.speed = Math.random() * 5 + 3; }
-        if (type === 'sakura') { this.size = Math.random() * 8 + 4; this.y = -20; this.drift = Math.random() * 2 - 1; }
-        if (type === 'bloodmoon') { this.y = canvas.height + 20; this.size = Math.random() * 4 + 1; }
-        if (type === 'oceanic') { this.y = canvas.height + 50; this.size = Math.random() * 10 + 2; }
-        if (type === 'minimal') { this.size = Math.random() * 80 + 30; this.opacity = Math.random() * 0.1; this.speed = 0.2; this.y = canvas.height + 100; }
-        if (type === 'aura') { this.size = Math.random() * 50 + 20; this.opacity = 0.1; }
-      }
-      update() {
-        if (this.type === 'matrix') { this.y += this.speed; if (this.y > canvas.height) this.init(this.type); }
-        else if (this.type === 'sakura') { this.y += this.speed; this.x += this.drift; if (this.y > canvas.height) this.init(this.type); }
-        else if (this.type === 'bloodmoon') { this.y -= this.speed; this.x += Math.sin(this.y/50); if (this.y < -20) this.init(this.type); }
-        else if (this.type === 'oceanic') { this.y -= this.speed; this.x += Math.cos(this.y/40); if (this.y < -50) this.init(this.type); }
-        else if (this.type === 'minimal') { this.y -= this.speed; if (this.y < -150) this.init(this.type); }
-        else { this.y -= this.speed; if (this.y < -50) this.init(this.type); }
-      }
-      draw() {
-        const color = getComputedStyle(document.body).getPropertyValue('--primary').trim();
-        ctx.fillStyle = color; ctx.globalAlpha = this.opacity;
-        if (this.type === 'matrix') { ctx.font = '14px monospace'; ctx.fillText(this.char, this.x, this.y); }
-        else if (['sakura', 'oceanic', 'aura', 'minimal'].includes(this.type)) { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
-        else { ctx.fillRect(this.x, this.y, this.size, this.size); }
-      }
-    }
-    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-    function updateFX(theme) { particles = []; let count = (theme === 'minimal') ? 12 : 50; for(let i=0; i<count; i++) particles.push(new Particle(theme)); }
-
-    // --- LOGIC ENGINE ---
     const CONFIG = {
       theory: { cieMax: 40, seeTotal: 100, theoryWeight: 0.60, minSeePerc: 0.45 },
       lab:    { cieMax: 60, seeTotal: 100, theoryWeight: 0.40, minSeePerc: 0.45 },
@@ -569,18 +899,130 @@
     let appState = { 
       tab: 'theory', 
       directMode: { theory: false, hybrid: false, lab: false }, 
-      expts: { hybrid: 1, lab: 1 } 
+      expts: { hybrid: 1, lab: 1 },
+      activeSemIndex: 0 // Default to Sem I
     };
 
-    window.onload = function() { initApp(); animate(); updateFX('minimal'); document.body.className = 'theme-minimal'; };
+    // --- FULL CURRICULUM DATA (Extracted precisely from R2022 PDF) ---
+    const SEMESTERS_DATA = [
+      { // Sem I
+        title: "Semester I",
+        courses: [
+          { name: "Communicative English", credits: 3, type: "Theory" },
+          { name: "Matrices And Calculus", credits: 4, type: "Theory" },
+          { name: "Engineering Physics", credits: 2, type: "Theory" },
+          { name: "Engineering Chemistry", credits: 2, type: "Theory" },
+          { name: "Compendium of Electrical Engineering", credits: 2, type: "Theory" },
+          { name: "Engineering Graphics", credits: 4, type: "Theory" },
+          { name: "Problem Solving and Python Programming", credits: 4, type: "Theory + Lab" },
+          { name: "Heritage of Tamils", credits: 1, type: "One Credit" },
+          { name: "Professional Ethics 1", credits: 1, type: "Non-Credit" }, // Note: PDF says non-credit for sem 1, but 1 credit in sem 2. Marking as 0 for calc logic if needed, but listed as 1 hr. We'll use 0 credits for non-credit courses to not affect SGPA.
+          { name: "Basic Science Laboratory", credits: 2, type: "Practical" },
+          { name: "Engineering Practices Laboratory", credits: 2, type: "Practical" },
+          { name: "C STEM Project", credits: 2, type: "Mini Project" }
+        ].map(c => c.name === "Professional Ethics 1" ? {...c, credits: 0} : c)
+      },
+      { // Sem II
+        title: "Semester II",
+        courses: [
+          { name: "Technical English", credits: 3, type: "Theory" },
+          { name: "Complex Variables and Transforms", credits: 4, type: "Theory" },
+          { name: "Physics for Electrical Engineering", credits: 2, type: "Theory" },
+          { name: "Electric Network Analysis", credits: 3, type: "Theory" },
+          { name: "Electronic Devices and Circuits", credits: 3, type: "Theory" },
+          { name: "C Programming", credits: 3, type: "Theory + Lab" },
+          { name: "Tamils and Technology", credits: 1, type: "One Credit" },
+          { name: "Professional Ethics 1", credits: 1, type: "One Credit" },
+          { name: "Environmental Science and Engineering", credits: 0, type: "Non-Credit" },
+          { name: "Electric Circuits and Simulation Laboratory", credits: 1, type: "Practical" },
+          { name: "Electronic Devices and Circuits Laboratory", credits: 1, type: "Practical" },
+          { name: "STEM Project", credits: 1, type: "Mini Project" }
+        ]
+      },
+      { // Sem III
+        title: "Semester III",
+        courses: [
+          { name: "Transforms and Partial Differential Equations", credits: 3, type: "Theory" },
+          { name: "DC Machines and Transformers", credits: 4, type: "Theory" },
+          { name: "Electromagnetic Theory", credits: 4, type: "Theory" },
+          { name: "Digital Circuits and Logic Design", credits: 4, type: "Theory" },
+          { name: "Open Elective - I", credits: 3, type: "Theory" },
+          { name: "Electric Vehicle Technology", credits: 2, type: "Theory" },
+          { name: "Sensors and Instrumentation", credits: 4, type: "Theory + Lab" },
+          { name: "Design Thinking", credits: 1, type: "One Credit" },
+          { name: "DC Machines and Transformers Laboratory", credits: 4, type: "Practical" },
+          { name: "Mini Project - I", credits: 2, type: "Mini Project" }
+        ]
+      },
+      { // Sem IV
+        title: "Semester IV",
+        courses: [
+          { name: "Statistics and Numerical Methods", credits: 3, type: "Theory" },
+          { name: "Induction and Synchronous Machines", credits: 4, type: "Theory" },
+          { name: "Control Engineering", credits: 4, type: "Theory" },
+          { name: "Transmission and Distribution", credits: 3, type: "Theory" },
+          { name: "Linear Integrated Circuits", credits: 3, type: "Theory" },
+          { name: "Open Elective II", credits: 3, type: "Theory" },
+          { name: "Biology for Engineers", credits: 1, type: "One Credit" },
+          { name: "Integrated Aptitude Skills I", credits: 0, type: "Non-Credit" },
+          { name: "AC Machines Laboratory", credits: 4, type: "Practical" },
+          { name: "Integrated Circuits and Control Systems Laboratory", credits: 4, type: "Practical" },
+          { name: "Mini Project - I", credits: 2, type: "Mini Project" } // Assumed from structure, verify credits if needed.
+        ]
+      },
+      { // Sem V
+        title: "Semester V",
+        courses: [
+          { name: "Power System Analysis and Economics", credits: 4, type: "Theory" },
+          { name: "Power Electronics", credits: 4, type: "Theory" },
+          { name: "Microprocessors and Controllers", credits: 3, type: "Theory" },
+          { name: "Industrial IoT and Robotics", credits: 2, type: "Theory" },
+          { name: "Professional Elective I", credits: 3, type: "Theory" },
+          { name: "Open Elective III", credits: 3, type: "Theory" },
+          { name: "Data Structures using C", credits: 3, type: "Theory + Lab" }, // Note: PDF says C=3, Hrs=4
+          { name: "Integrated Aptitude Skills II", credits: 0, type: "Non-Credit" },
+          { name: "Microprocessors and Controllers Laboratory", credits: 2, type: "Practical" }, // Note: Hrs=4, C=2
+          { name: "Interpersonal Skills and Personality Development Lab", credits: 1, type: "Practical" },
+          { name: "Mini Project - II", credits: 2, type: "Mini Project" } // Note: Hrs=2, C=2 likely. PDF cuts off slightly.
+        ]
+      },
+      { // Sem VI
+        title: "Semester VI",
+        courses: [
+          { name: "Power System Protection and Switchgear", credits: 3, type: "Theory" },
+          { name: "Renewable Energy Systems and Smart Grid", credits: 3, type: "Theory" },
+          { name: "Artificial Intelligence", credits: 2, type: "Theory" },
+          { name: "Principles of Management", credits: 3, type: "Theory" },
+          { name: "Professional Elective II", credits: 3, type: "Theory" },
+          { name: "Power System Simulation and Renewable Energy Systems Lab", credits: 2, type: "Practical" },
+          { name: "Power Electronics and Drives Laboratory", credits: 2, type: "Practical" },
+          { name: "Mini Project - II", credits: 2, type: "Mini Project" },
+          { name: "Professional Readiness Course", credits: 1, type: "Practical" } // Listed under practicals
+        ]
+      },
+      { // Sem VII
+        title: "Semester VII",
+        courses: [
+          { name: "Professional Elective III", credits: 3, type: "Theory" },
+          { name: "Professional Elective IV", credits: 3, type: "Theory" },
+          { name: "Professional Elective V", credits: 3, type: "Theory" },
+          { name: "Professional Elective VI", credits: 3, type: "Theory" }
+        ]
+      },
+      { // Sem VIII
+        title: "Semester VIII",
+        courses: [
+          { name: "Project Work", credits: 9, type: "Practical" }
+        ]
+      }
+    ];
+
+    const GRADE_POINTS = { 'O': 10, 'A+': 9, 'A': 8, 'B+': 7, 'B': 6, 'C': 5, 'RA': 0 };
+
+    window.onload = function() { initApp(); };
 
     function initApp() {
-      document.getElementById('themeEngine').onchange = (e) => {
-        const t = e.target.value;
-        document.body.className = t === 'default' ? '' : 'theme-' + t;
-        updateFX(t);
-      };
-
+      // Navigation
       const navBtns = document.querySelectorAll('.nav-btn');
       navBtns.forEach(btn => {
         btn.onclick = function() {
@@ -592,6 +1034,7 @@
         };
       });
 
+      // Override Button
       document.getElementById('toggleOverride').onclick = function() {
         const currentTab = appState.tab;
         if(currentTab === 'sgpa') return;
@@ -601,10 +1044,11 @@
         calculate();
       };
 
+      // Clear Button
       document.getElementById('clearSection').onclick = () => {
         const t = appState.tab;
         if(t === 'sgpa') {
-          document.getElementById('sgpa-list').innerHTML = '';
+          document.querySelectorAll('.course-grade-select').forEach(sel => sel.value = '');
         } else if(appState.directMode[t]) {
           const directEl = document.getElementById(`${t}-direct-cie`);
           if (directEl) directEl.value = '';
@@ -615,14 +1059,18 @@
         calculate();
       };
 
-      const allInputs = ['theory-i1', 'theory-i1ass', 'theory-i2', 'theory-i2ass', 'theory-direct-cie', 
-                         'hybrid-i1', 'hybrid-i1ass', 'hybrid-i2', 'hybrid-i2ass', 'hybrid-model', 'hybrid-pSee', 'hybrid-direct-cie',
-                         'lab-model', 'lab-direct-cie'];
+      // Input Event Listeners
+      const allInputs = [
+        'theory-i1', 'theory-i1ass', 'theory-i2', 'theory-i2ass', 'theory-direct-cie', 
+        'hybrid-i1', 'hybrid-i1ass', 'hybrid-i2', 'hybrid-i2ass', 'hybrid-model', 'hybrid-pSee', 'hybrid-direct-cie',
+        'lab-model', 'lab-direct-cie'
+      ];
       allInputs.forEach(id => {
         const el = document.getElementById(id);
         if(el) el.oninput = calculate;
       });
 
+      // Experiments Listeners
       ['hybrid', 'lab'].forEach(t => {
         const el = document.getElementById(`${t}-numExpts`);
         if (el) {
@@ -634,48 +1082,35 @@
         }
       });
 
-      document.getElementById('add-course').onclick = () => {
-        const list = document.getElementById('sgpa-list');
-        const div = document.createElement('div');
-        div.className = 'input-grid'; div.style.marginBottom = '12px';
-        div.innerHTML = `<input type="number" placeholder="Pt" class="sg-pt" style="background:var(--input-bg); border:var(--border); border-radius:15px; padding:12px; font-family:inherit; color:var(--primary);"><input type="number" placeholder="Cr" class="sg-cr" style="background:var(--input-bg); border:var(--border); border-radius:15px; padding:12px; font-family:inherit; color:var(--primary);">`;
-        list.appendChild(div);
-        div.querySelectorAll('input').forEach(i => i.oninput = calcSGPA);
-      };
-
-      // POPUP LOGIC
+      // Popup Listeners
       const popup = document.getElementById('sem-popup');
-      const popupStatus = document.getElementById('popup-status');
-
       document.getElementById('open-sem-popup').onclick = () => {
         popup.style.display = 'flex';
+        // Small delay to allow display:flex to apply before adding opacity class
         setTimeout(() => popup.classList.add('active'), 10);
       };
 
       function closePopup() {
         popup.classList.remove('active');
-        setTimeout(() => { popup.style.display = 'none'; popupStatus.innerText = ''; }, 300);
+        setTimeout(() => { popup.style.display = 'none'; }, 400); // Wait for transition
       }
 
       document.getElementById('close-popup-btn').onclick = closePopup;
       popup.onclick = (e) => { if(e.target === popup) closePopup(); };
 
-      // Semester Button Logic
-      document.querySelectorAll('.sem-btn').forEach((btn, idx) => {
+      // Semester Selection
+      document.querySelectorAll('.sem-btn').forEach(btn => {
         btn.onclick = () => {
-          if (idx === 0) { // Semester 1
-            window.open('https://thecircuittheory.github.io/gpa-analyzer/', '_blank');
-            closePopup();
-          } else { // Others
-            popupStatus.innerText = "LINK UPLINK OFFLINE // COMING SOON";
-            popupStatus.style.opacity = 1;
-            setTimeout(() => popupStatus.innerText = "", 2000);
-          }
+          appState.activeSemIndex = parseInt(btn.getAttribute('data-sem'));
+          renderSemesterData();
+          closePopup();
         };
       });
 
+      // Initial Renders
       renderExpts('hybrid');
       renderExpts('lab');
+      renderSemesterData();
       syncUI();
       calculate();
     }
@@ -713,6 +1148,7 @@
         const globalMaxLabel = document.getElementById('cie-max');
         if (globalMaxLabel) globalMaxLabel.innerText = `/${CONFIG[t].cieMax}`;
       }
+      
       if (t === 'sgpa') calcSGPA();
     }
 
@@ -722,17 +1158,116 @@
       grid.innerHTML = '';
       for(let i=1; i<=appState.expts[tab]; i++) {
         const input = document.createElement('input');
-        input.type = 'number'; input.className = `${tab}-expt-val expt-val`; input.placeholder = `E${i}`; input.oninput = calculate;
+        input.type = 'number'; 
+        input.className = `${tab}-expt-val expt-val input-field`; 
+        input.placeholder = `E${i}`; 
+        input.style.width = '100%';
+        input.style.padding = '0.7rem';
+        input.style.border = '2px solid rgba(255,255,255,0.9)';
+        input.style.borderRadius = '50px';
+        input.style.outline = 'none';
+        input.style.fontFamily = 'inherit';
+        input.style.fontWeight = '700';
+        input.style.background = 'rgba(255,255,255,0.6)';
+        input.style.boxShadow = '0 4px 10px rgba(0,0,0,0.02), inset 0 2px 5px rgba(255,255,255,0.5)';
+        input.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        
+        input.onfocus = function() {
+            this.style.borderColor = 'var(--primary)';
+            this.style.background = 'rgba(255,255,255,0.95)';
+            this.style.boxShadow = '0 0 0 4px rgba(203, 168, 240, 0.25), 0 6px 15px rgba(0,0,0,0.05)';
+            this.style.transform = 'translateY(-2px)';
+        }
+        input.onblur = function() {
+            this.style.borderColor = 'rgba(255,255,255,0.9)';
+            this.style.background = 'rgba(255,255,255,0.6)';
+            this.style.boxShadow = '0 4px 10px rgba(0,0,0,0.02), inset 0 2px 5px rgba(255,255,255,0.5)';
+            this.style.transform = 'translateY(0)';
+        }
+
+        input.oninput = calculate;
         grid.appendChild(input);
       }
     }
 
+    function renderSemesterData() {
+      const semData = SEMESTERS_DATA[appState.activeSemIndex];
+      const titleEl = document.getElementById('current-sem-title');
+      const listEl = document.getElementById('sgpa-course-list');
+      
+      titleEl.innerText = semData.title;
+      titleEl.style.display = 'block';
+      listEl.innerHTML = '';
+
+      // Group courses by type
+      const groups = {};
+      semData.courses.forEach(c => {
+        if(!groups[c.type]) groups[c.type] = [];
+        groups[c.type].push(c);
+      });
+
+      // Define render order
+      const order = ["Theory", "Theory + Lab", "Practical", "One Credit", "Mini Project", "Non-Credit"];
+
+      let delayIndex = 0; // For staggered animation
+
+      order.forEach(type => {
+        if(groups[type] && groups[type].length > 0) {
+          const catTitle = document.createElement('div');
+          catTitle.className = 'course-category';
+          catTitle.innerText = type;
+          catTitle.style.opacity = '0';
+          catTitle.style.animation = `popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards ${delayIndex * 0.05}s`;
+          listEl.appendChild(catTitle);
+          delayIndex++;
+
+          groups[type].forEach(course => {
+            const isNonCredit = course.credits === 0;
+            const row = document.createElement('div');
+            row.className = 'course-item';
+            row.style.animationDelay = `${delayIndex * 0.05}s`;
+            delayIndex++;
+            row.innerHTML = `
+              <div class="course-info">
+                <div class="course-name">${course.name}</div>
+                <div class="course-credits">${isNonCredit ? 'Non-Credit' : `${course.credits} ${course.credits === 1 ? 'Credit' : 'Credits'}`}</div>
+              </div>
+              <select class="course-grade-select" data-credits="${course.credits}">
+                <option value="" disabled selected>-</option>
+                ${isNonCredit ? `
+                  <option value="O">Pass</option>
+                  <option value="RA">Fail</option>
+                ` : `
+                  <option value="O">O (10)</option>
+                  <option value="A+">A+ (9)</option>
+                  <option value="A">A (8)</option>
+                  <option value="B+">B+ (7)</option>
+                  <option value="B">B (6)</option>
+                  <option value="C">C (5)</option>
+                  <option value="RA">RA (0)</option>
+                `}
+              </select>
+            `;
+            listEl.appendChild(row);
+            
+            // Attach event listener for live calculation
+            row.querySelector('select').addEventListener('change', calculate);
+          });
+        }
+      });
+      
+      calculate(); // Reset summary when sem changes
+    }
+
     function calculate() {
       if(appState.tab === 'sgpa') return calcSGPA();
+      
       const t = appState.tab;
       const conf = CONFIG[t];
       if (!conf) return;
-      let cie = 0; let knownSee = 0;
+      
+      let cie = 0; 
+      let knownSee = 0;
 
       if(appState.directMode[t]) {
         const directInput = document.getElementById(`${t}-direct-cie`);
@@ -768,6 +1303,7 @@
       const list = document.getElementById('target-list');
       if(!list) return;
       list.innerHTML = '';
+      
       const grades = [{ l:'O', p:10, t:91 }, { l:'A+', p:9, t:81 }, { l:'A', p:8, t:71 }, { l:'B+', p:7, t:61 }, { l:'B', p:6, t:56 }, { l:'C', p:5, t:50 }];
       const minSee = ((appState.tab === 'theory') ? 60 : (appState.tab === 'lab' ? 40 : 50)) * 0.45;
 
@@ -778,26 +1314,72 @@
         let finalMark = Math.max(paperMark, Math.max(0, ruleMin));
         let applied = finalMark > paperMark;
 
-        let sClass = "status-doable", tClass = "txt-doable", mText = finalMark;
-        if (finalMark > 100) { sClass = "status-impossible", mText = "N/A"; }
-        else if (finalMark >= 80) sClass = "status-hard";
+        let sClass = "", tClass = "", mText = finalMark;
+        if (finalMark > 100) { sClass = "status-impossible"; mText = "N/A"; }
+        else if (finalMark >= 80) { sClass = "status-hard"; }
 
         const row = document.createElement('div');
         row.className = `grade-row ${sClass}`;
-        row.innerHTML = `<div><span class="grade-label">${g.l}</span><span class="grade-points">Grade: ${g.p}</span></div><div class="req-val"><span class="${tClass}">${mText}</span><span style="font-size:7px; text-transform:uppercase; color:var(--text-dim); display:block;">${applied ? 'Pass Rule' : 'Target Score'}</span>${appState.tab === 'hybrid' ? `<span class="combined-see">Goal: ${Math.max(minSee, g.t-cie).toFixed(1)}/50</span>` : ''}</div>`;
+        
+        row.innerHTML = `
+          <div>
+            <span class="grade-label">${g.l}</span>
+            <span class="grade-points">Grade: ${g.p}</span>
+          </div>
+          <div class="req-val">
+            <span class="${tClass}">${mText}</span>
+            <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); display:block; font-weight: 800; margin-top:2px; letter-spacing:0.5px;">
+              ${applied ? 'Pass Rule Applied' : 'Target Score'}
+            </span>
+            ${appState.tab === 'hybrid' ? `<span class="combined-see">Combined Goal: ${Math.max(minSee, g.t-cie).toFixed(1)}/50</span>` : ''}
+          </div>
+        `;
         list.appendChild(row);
       });
     }
 
     function calcSGPA() {
-      let pts = 0, crs = 0;
-      Array.from(document.getElementById('sgpa-list').children).forEach(r => {
-        const pEl = r.querySelector('.sg-pt');
-        const cEl = r.querySelector('.sg-cr');
-        const p = parseFloat(pEl ? pEl.value : 0)||0, c = parseFloat(cEl ? cEl.value : 0)||0;
-        pts += (p*c); crs += c;
+      let totalPts = 0;
+      let totalRegisteredCredits = 0;
+      let completedCoursesCount = 0;
+      let totalCoursesInSem = document.querySelectorAll('.course-grade-select').length;
+
+      document.querySelectorAll('.course-grade-select').forEach(selectEl => {
+        const grade = selectEl.value;
+        const credits = parseFloat(selectEl.getAttribute('data-credits')) || 0;
+        
+        if(grade !== "") {
+          completedCoursesCount++;
+          if (credits > 0) { // Standard credit-bearing courses
+            totalRegisteredCredits += credits;
+            if(grade !== 'RA' && GRADE_POINTS[grade] !== undefined) {
+              totalPts += (credits * GRADE_POINTS[grade]);
+            }
+          }
+        }
       });
-      document.getElementById('sgpa-val').innerText = crs ? (pts/crs).toFixed(2) : "0.00";
+
+      const sgpa = totalRegisteredCredits > 0 ? (totalPts / totalRegisteredCredits).toFixed(2) : "0.00";
+      
+      document.getElementById('sgpa-val').innerText = sgpa;
+      document.getElementById('sgpa-credits').innerText = totalRegisteredCredits;
+      document.getElementById('sgpa-points').innerText = totalPts;
+      document.getElementById('sgpa-completed').innerText = `${completedCoursesCount} / ${totalCoursesInSem}`;
+
+      // Performance text
+      const perfEl = document.getElementById('sgpa-performance');
+      if (completedCoursesCount === 0) {
+        perfEl.innerText = "N/A";
+        perfEl.style.color = "var(--text-muted)";
+      } else {
+        const s = parseFloat(sgpa);
+        if (s >= 9.0) { perfEl.innerText = "Outstanding"; perfEl.style.color = "#7b59a6"; }
+        else if (s >= 8.0) { perfEl.innerText = "Excellent"; perfEl.style.color = "var(--success)"; }
+        else if (s >= 7.0) { perfEl.innerText = "Good"; perfEl.style.color = "var(--success)"; }
+        else if (s >= 6.0) { perfEl.innerText = "Average"; perfEl.style.color = "#d19e38"; }
+        else if (s > 0) { perfEl.innerText = "Needs Improvement"; perfEl.style.color = "var(--danger)"; }
+        else { perfEl.innerText = "Arrear (RA)"; perfEl.style.color = "var(--danger)"; }
+      }
     }
   </script>
 </body>
