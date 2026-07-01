@@ -651,11 +651,11 @@
       <div class="actions-hub">
         <div class="action-group">
           <span>Mode</span>
-          <button class="btn" id="toggleOverride">Direct Entry Mode</button>
+          <button class="btn" id="toggleOverride">Direct Score Entry</button>
         </div>
         <div class="action-group">
           <span>Reset</span>
-          <button class="btn btn-danger" id="clearSection">Clear Form</button>
+          <button class="btn btn-danger" id="clearSection">Reset Inputs</button>
         </div>
       </div>
     </header>
@@ -686,16 +686,16 @@
         <div id="tab-theory" class="tab-content">
           <div class="direct-panel hidden" id="direct-theory">
             <div class="panel">
-              <div class="card-title">Direct Internal Input</div>
+              <div class="card-title">Enter Internal Score Directly</div>
               <div class="internal-block">
-                <div class="block-header"><span>Final Internal Score</span><span id="theory-max-label">/40</span></div>
+                <div class="block-header"><span>Final Internal Mark</span><span id="theory-max-label">/40</span></div>
                 <div class="input-field"><input type="number" id="theory-direct-cie" placeholder="Enter out of 40"></div>
               </div>
             </div>
           </div>
           <div class="detailed-panel" id="detailed-theory">
             <div class="panel">
-              <div class="card-title">Theory Assessment Breakdown</div>
+              <div class="card-title">Theory Internal Breakdown</div>
               <div class="internal-block">
                 <div class="block-header"><span>Assessment I</span><span>Max: 100</span></div>
                 <div class="input-grid">
@@ -718,16 +718,16 @@
         <div id="tab-hybrid" class="tab-content hidden">
           <div class="direct-panel hidden" id="direct-hybrid">
             <div class="panel">
-              <div class="card-title">Direct Internal Input</div>
+              <div class="card-title">Enter Internal Score Directly</div>
               <div class="internal-block">
-                <div class="block-header"><span>Final Internal Score</span><span id="hybrid-max-label">/50</span></div>
+                <div class="block-header"><span>Final Internal Mark</span><span id="hybrid-max-label">/50</span></div>
                 <div class="input-field"><input type="number" id="hybrid-direct-cie" placeholder="Enter out of 50"></div>
               </div>
             </div>
           </div>
           <div class="detailed-panel" id="detailed-hybrid">
             <div class="panel">
-              <div class="card-title">Hybrid Theory Component</div>
+              <div class="card-title">Theory Component</div>
               <div class="internal-block">
                 <div class="block-header"><span>Assessment I</span><span>Max: 100</span></div>
                 <div class="input-grid">
@@ -744,7 +744,7 @@
               </div>
             </div>
             <div class="panel">
-              <div class="card-title">Hybrid Lab Component</div>
+              <div class="card-title">Lab Component</div>
               <div class="input-field">
                 <label>Model Lab Exam (Max 100)</label>
                 <input type="number" id="hybrid-model" placeholder="0">
@@ -759,9 +759,9 @@
             </div>
           </div>
           <div class="panel">
-            <div class="card-title">Practical SEE Expected Mark</div>
+            <div class="card-title">Expected Practical SEE Mark</div>
             <div class="input-field">
-              <label>Semester Lab Mark (Max 100)</label>
+              <label>Practical SEE Mark (Max 100)</label>
               <input type="number" id="hybrid-pSee" placeholder="0">
             </div>
           </div>
@@ -771,9 +771,9 @@
         <div id="tab-lab" class="tab-content hidden">
           <div class="direct-panel hidden" id="direct-lab">
             <div class="panel">
-              <div class="card-title">Direct Internal Input</div>
+              <div class="card-title">Enter Internal Score Directly</div>
               <div class="internal-block">
-                <div class="block-header"><span>Final Internal Score</span><span id="lab-max-label">/60</span></div>
+                <div class="block-header"><span>Final Internal Mark</span><span id="lab-max-label">/60</span></div>
                 <div class="input-field"><input type="number" id="lab-direct-cie" placeholder="Enter out of 60"></div>
               </div>
             </div>
@@ -799,11 +799,11 @@
         <!-- Tab: SGPA -->
         <div id="tab-sgpa" class="tab-content hidden">
           <div class="panel">
-            <div class="card-title">Curriculum Planner</div>
+            <div class="card-title">SGPA Planner</div>
 
             <!-- POPUP TRIGGER -->
             <div class="sgpa-selector-btn" id="open-sem-popup">
-              Select Semester Curriculum
+              Choose Semester
             </div>
 
             <h3 id="current-sem-title" style="margin-bottom: 1rem; color: #7b59a6; font-weight: 800; text-align: center; display: none; font-size: 1.4rem;">Semester I</h3>
@@ -819,15 +819,15 @@
         
         <!-- Standard Prediction Results -->
         <div id="std-results">
-          <div class="card-title">Internal Performance</div>
+          <div class="card-title">Internal Score</div>
           <div style="display:flex; align-items:baseline; gap:0.75rem; margin-bottom:1rem;">
             <span class="score-big" id="cie-val">00</span>
             <span id="cie-max" class="score-max-unit">/40</span>
           </div>
-          <div class="regulation-tag">R2022 CL 15.1: 45% SEE Pass Rule</div>
+          <div class="regulation-tag">R2022 Clause 15.1 &bull; Minimum SEE Pass: 45%</div>
           
           <div style="margin-top:2.5rem;">
-            <div class="card-title">Required SEE Targets</div>
+            <div class="card-title">Required SEE Marks</div>
             <div id="target-list" class="custom-scroll" style="max-height: 400px; overflow-y: auto; padding-right: 5px;"></div>
           </div>
         </div>
@@ -837,7 +837,7 @@
           <div class="card-title">Semester Summary</div>
           
           <div class="sgpa-summary-box" style="background: rgba(203, 168, 240, 0.2); border: 1px solid rgba(203, 168, 240, 0.4); box-shadow: 0 4px 15px rgba(203, 168, 240, 0.1);">
-            <div class="sgpa-stat-title" style="color: #7b59a6;">Current SGPA</div>
+            <div class="sgpa-stat-title" style="color: #7b59a6;">Estimated SGPA</div>
             <div class="score-big" style="font-size:3.5rem; margin:0; letter-spacing: -1px;" id="sgpa-val">0.00</div>
           </div>
 
@@ -847,18 +847,18 @@
               <div class="sgpa-stat-value" id="sgpa-credits">0</div>
             </div>
             <div style="text-align: right;">
-              <div class="sgpa-stat-title">Total Points</div>
+              <div class="sgpa-stat-title">Credit Points</div>
               <div class="sgpa-stat-value" id="sgpa-points">0</div>
             </div>
           </div>
           
           <div class="sgpa-summary-box">
             <div>
-              <div class="sgpa-stat-title">Courses Completed</div>
+              <div class="sgpa-stat-title">Courses Graded</div>
               <div class="sgpa-stat-value" id="sgpa-completed">0 / 0</div>
             </div>
             <div style="text-align: right;">
-              <div class="sgpa-stat-title">Performance</div>
+              <div class="sgpa-stat-title">Overall Performance</div>
               <div class="sgpa-stat-value" id="sgpa-performance" style="color: #55996c; font-size: 1.1rem;">N/A</div>
             </div>
           </div>
@@ -873,8 +873,8 @@
   <div class="popup-overlay" id="sem-popup">
     <div class="popup-content">
       <button class="close-popup" id="close-popup-btn">&times;</button>
-      <h2 style="color: #7b59a6; font-weight: 800; margin-bottom: 0.5rem; font-size: 1.8rem; letter-spacing: -0.5px;">Select Semester</h2>
-      <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 600;">Choose a semester to load exact curriculum courses.</p>
+      <h2 style="color: #7b59a6; font-weight: 800; margin-bottom: 0.5rem; font-size: 1.8rem; letter-spacing: -0.5px;">Select a Semester</h2>
+      <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 600;">Choose a semester to view its courses.</p>
       
       <div class="sem-grid">
         <button class="sem-btn" data-sem="0">Semester I</button>
@@ -1324,12 +1324,12 @@
         row.innerHTML = `
           <div>
             <span class="grade-label">${g.l}</span>
-            <span class="grade-points">Grade: ${g.p}</span>
+            <span class="grade-points">Grade Points: ${g.p}</span>
           </div>
           <div class="req-val">
             <span class="${tClass}">${mText}</span>
             <span style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); display:block; font-weight: 800; margin-top:2px; letter-spacing:0.5px;">
-              ${applied ? 'Pass Rule Applied' : 'Target Score'}
+              ${applied ? 'Minimum Pass Rule Applied' : 'Required SEE'}
             </span>
             ${appState.tab === 'hybrid' ? `<span class="combined-see">Combined Goal: ${Math.max(minSee, g.t-cie).toFixed(1)}/50</span>` : ''}
           </div>
