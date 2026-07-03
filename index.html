@@ -367,7 +367,7 @@
       font-weight: 700; 
     }
     
-    .input-field input, .custom-select { 
+    .input-field input, .custom-select, .expt-val { 
       width: 100%; 
       background: rgba(255,255,255,0.6); 
       border: 2px solid rgba(255,255,255,0.9); 
@@ -382,7 +382,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.02), inset 0 2px 5px rgba(255,255,255,0.5);
     }
     
-    .input-field input:focus, .custom-select:focus { 
+    .input-field input:focus, .custom-select:focus, .expt-val:focus { 
       border-color: var(--primary); 
       background: rgba(255,255,255,0.95);
       box-shadow: 0 0 0 4px rgba(203, 168, 240, 0.25), 0 6px 15px rgba(0,0,0,0.05); 
@@ -401,7 +401,10 @@
       padding-right: 8px;
     }
     
-    .expt-val { text-align: center; }
+    .expt-val { 
+      padding: 0.7rem !important; 
+      text-align: center; 
+    }
 
     .results-panel { 
       background: var(--glass-bg); 
@@ -689,7 +692,7 @@
               <div class="card-title">Enter Internal Score Directly</div>
               <div class="internal-block">
                 <div class="block-header"><span>Final Internal Mark</span><span id="theory-max-label">/40</span></div>
-                <div class="input-field"><input type="number" id="theory-direct-cie" placeholder="Enter out of 40"></div>
+                <div class="input-field"><input type="number" id="theory-direct-cie" placeholder="Enter out of 40" min="0"></div>
               </div>
             </div>
           </div>
@@ -699,15 +702,15 @@
               <div class="internal-block">
                 <div class="block-header"><span>Assessment I</span><span>Max: 100</span></div>
                 <div class="input-grid">
-                  <div class="input-field"><label>Test (60%)</label><input type="number" id="theory-i1" placeholder="0"></div>
-                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="theory-i1ass" placeholder="0"></div>
+                  <div class="input-field"><label>Test (60%)</label><input type="number" id="theory-i1" placeholder="0" min="0"></div>
+                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="theory-i1ass" placeholder="0" min="0"></div>
                 </div>
               </div>
               <div class="internal-block">
                 <div class="block-header"><span>Assessment II</span><span>Max: 100</span></div>
                 <div class="input-grid">
-                  <div class="input-field"><label>Test (60%)</label><input type="number" id="theory-i2" placeholder="0"></div>
-                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="theory-i2ass" placeholder="0"></div>
+                  <div class="input-field"><label>Test (60%)</label><input type="number" id="theory-i2" placeholder="0" min="0"></div>
+                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="theory-i2ass" placeholder="0" min="0"></div>
                 </div>
               </div>
             </div>
@@ -721,7 +724,7 @@
               <div class="card-title">Enter Internal Score Directly</div>
               <div class="internal-block">
                 <div class="block-header"><span>Final Internal Mark</span><span id="hybrid-max-label">/50</span></div>
-                <div class="input-field"><input type="number" id="hybrid-direct-cie" placeholder="Enter out of 50"></div>
+                <div class="input-field"><input type="number" id="hybrid-direct-cie" placeholder="Enter out of 50" min="0"></div>
               </div>
             </div>
           </div>
@@ -731,15 +734,15 @@
               <div class="internal-block">
                 <div class="block-header"><span>Assessment I</span><span>Max: 100</span></div>
                 <div class="input-grid">
-                  <div class="input-field"><label>Test (60%)</label><input type="number" id="hybrid-i1" placeholder="0"></div>
-                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="hybrid-i1ass" placeholder="0"></div>
+                  <div class="input-field"><label>Test (60%)</label><input type="number" id="hybrid-i1" placeholder="0" min="0"></div>
+                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="hybrid-i1ass" placeholder="0" min="0"></div>
                 </div>
               </div>
               <div class="internal-block">
                 <div class="block-header"><span>Assessment II</span><span>Max: 100</span></div>
                 <div class="input-grid">
-                  <div class="input-field"><label>Test (60%)</label><input type="number" id="hybrid-i2" placeholder="0"></div>
-                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="hybrid-i2ass" placeholder="0"></div>
+                  <div class="input-field"><label>Test (60%)</label><input type="number" id="hybrid-i2" placeholder="0" min="0"></div>
+                  <div class="input-field"><label>Assignment (40%)</label><input type="number" id="hybrid-i2ass" placeholder="0" min="0"></div>
                 </div>
               </div>
             </div>
@@ -747,7 +750,7 @@
               <div class="card-title">Lab Component</div>
               <div class="input-field">
                 <label>Model Lab Exam (Max 100)</label>
-                <input type="number" id="hybrid-model" placeholder="0">
+                <input type="number" id="hybrid-model" placeholder="0" min="0">
               </div>
               <div class="input-field" style="margin-top:1.8rem;">
                 <label style="display:flex; justify-content:space-between; align-items:center;">
@@ -762,7 +765,7 @@
             <div class="card-title">Expected Practical SEE Mark</div>
             <div class="input-field">
               <label>Practical SEE Mark (Max 100)</label>
-              <input type="number" id="hybrid-pSee" placeholder="0">
+              <input type="number" id="hybrid-pSee" placeholder="0" min="0">
             </div>
           </div>
         </div>
@@ -774,7 +777,7 @@
               <div class="card-title">Enter Internal Score Directly</div>
               <div class="internal-block">
                 <div class="block-header"><span>Final Internal Mark</span><span id="lab-max-label">/60</span></div>
-                <div class="input-field"><input type="number" id="lab-direct-cie" placeholder="Enter out of 60"></div>
+                <div class="input-field"><input type="number" id="lab-direct-cie" placeholder="Enter out of 60" min="0"></div>
               </div>
             </div>
           </div>
@@ -783,7 +786,7 @@
               <div class="card-title">Lab Assessment</div>
               <div class="input-field">
                 <label>Model Lab Exam (Max 100)</label>
-                <input type="number" id="lab-model" placeholder="0">
+                <input type="number" id="lab-model" placeholder="0" min="0">
               </div>
               <div class="input-field" style="margin-top:1.8rem;">
                 <label style="display:flex; justify-content:space-between; align-items:center;">
@@ -916,7 +919,7 @@
           { name: "Engineering Graphics", credits: 3, type: "Theory" },
           { name: "Problem Solving and Python Programming", credits: 3, type: "Theory + Lab" },
           { name: "Heritage of Tamils", credits: 1, type: "One Credit" },
-          { name: "Professional Ethics 1", credits: 1, type: "Non-Credit" }, // Note: PDF says non-credit for sem 1, but 1 credit in sem 2. Marking as 0 for calc logic if needed, but listed as 1 hr. We'll use 0 credits for non-credit courses to not affect SGPA.
+          { name: "Professional Ethics 1", credits: 1, type: "Non-Credit" },
           { name: "Basic Science Laboratory", credits: 1, type: "Practical" },
           { name: "Engineering Practices Laboratory", credits: 1, type: "Practical" },
           { name: "C STEM Project", credits: 0, type: "Mini Project" }
@@ -967,7 +970,7 @@
           { name: "Integrated Aptitude Skills I", credits: 0, type: "Non-Credit" },
           { name: "AC Machines Laboratory", credits: 2, type: "Practical" },
           { name: "Integrated Circuits and Control Systems Laboratory", credits: 2, type: "Practical" },
-          { name: "Mini Project - I", credits: 2, type: "Mini Project" } // Assumed from structure, verify credits if needed.
+          { name: "Mini Project - I", credits: 2, type: "Mini Project" }
         ]
       },
       { // Sem V
@@ -979,11 +982,11 @@
           { name: "Industrial IoT and Robotics", credits: 2, type: "Theory" },
           { name: "Professional Elective I", credits: 3, type: "Theory" },
           { name: "Open Elective III", credits: 3, type: "Theory" },
-          { name: "Data Structures using C", credits: 3, type: "Theory + Lab" }, // Note: PDF says C=3, Hrs=4
+          { name: "Data Structures using C", credits: 3, type: "Theory + Lab" },
           { name: "Integrated Aptitude Skills II", credits: 0, type: "Non-Credit" },
-          { name: "Microprocessors and Controllers Laboratory", credits: 2, type: "Practical" }, // Note: Hrs=4, C=2
+          { name: "Microprocessors and Controllers Laboratory", credits: 2, type: "Practical" },
           { name: "Interpersonal Skills and Personality Development Lab", credits: 1, type: "Practical" },
-          { name: "Mini Project - II", credits: 0, type: "Mini Project" } // Note: Hrs=2, C=2 likely. PDF cuts off slightly.
+          { name: "Mini Project - II", credits: 0, type: "Mini Project" }
         ]
       },
       { // Sem VI
@@ -997,7 +1000,7 @@
           { name: "Power System Simulation and Renewable Energy Systems Lab", credits: 2, type: "Practical" },
           { name: "Power Electronics and Drives Laboratory", credits: 2, type: "Practical" },
           { name: "Mini Project - II", credits: 2, type: "Mini Project" },
-          { name: "Professional Readiness Course", credits: 1, type: "Practical" } // Listed under practicals
+          { name: "Professional Readiness Course", credits: 1, type: "Practical" }
         ]
       },
       { // Sem VII
@@ -1159,32 +1162,9 @@
       for(let i=1; i<=appState.expts[tab]; i++) {
         const input = document.createElement('input');
         input.type = 'number'; 
-        input.className = `${tab}-expt-val expt-val input-field`; 
+        input.className = `${tab}-expt-val expt-val`; 
         input.placeholder = `E${i}`; 
-        input.style.width = '100%';
-        input.style.padding = '0.7rem';
-        input.style.border = '2px solid rgba(255,255,255,0.9)';
-        input.style.borderRadius = '50px';
-        input.style.outline = 'none';
-        input.style.fontFamily = 'inherit';
-        input.style.fontWeight = '700';
-        input.style.background = 'rgba(255,255,255,0.6)';
-        input.style.boxShadow = '0 4px 10px rgba(0,0,0,0.02), inset 0 2px 5px rgba(255,255,255,0.5)';
-        input.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-        
-        input.onfocus = function() {
-            this.style.borderColor = 'var(--primary)';
-            this.style.background = 'rgba(255,255,255,0.95)';
-            this.style.boxShadow = '0 0 0 4px rgba(203, 168, 240, 0.25), 0 6px 15px rgba(0,0,0,0.05)';
-            this.style.transform = 'translateY(-2px)';
-        }
-        input.onblur = function() {
-            this.style.borderColor = 'rgba(255,255,255,0.9)';
-            this.style.background = 'rgba(255,255,255,0.6)';
-            this.style.boxShadow = '0 4px 10px rgba(0,0,0,0.02), inset 0 2px 5px rgba(255,255,255,0.5)';
-            this.style.transform = 'translateY(0)';
-        }
-
+        input.min = '0';
         input.oninput = calculate;
         grid.appendChild(input);
       }
@@ -1269,21 +1249,17 @@
       let cie = 0; 
       let knownSee = 0;
 
+      const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+
       if(appState.directMode[t]) {
-        const directInput = document.getElementById(`${t}-direct-cie`);
-        cie = Math.min(parseFloat(directInput ? directInput.value : 0)||0, conf.cieMax);
+        cie = Math.min(getNum(`${t}-direct-cie`), conf.cieMax);
       } else {
         if(t === 'theory' || t === 'hybrid') {
-          const i1 = document.getElementById(`${t}-i1`);
-          const i1a = document.getElementById(`${t}-i1ass`);
-          const i2 = document.getElementById(`${t}-i2`);
-          const i2a = document.getElementById(`${t}-i2ass`);
-          const sum = (parseFloat(i1 ? i1.value : 0)||0) + (parseFloat(i1a ? i1a.value : 0)||0) + (parseFloat(i2 ? i2.value : 0)||0) + (parseFloat(i2a ? i2a.value : 0)||0);
+          const sum = getNum(`${t}-i1`) + getNum(`${t}-i1ass`) + getNum(`${t}-i2`) + getNum(`${t}-i2ass`);
           cie += (sum / 200) * (t === 'theory' ? 40 : 25);
         }
         if(t === 'lab' || t === 'hybrid') {
-          const modelEl = document.getElementById(`${t}-model`);
-          const m = parseFloat(modelEl ? modelEl.value : 0)||0;
+          const m = getNum(`${t}-model`);
           const e = Array.from(document.querySelectorAll(`.${t}-expt-val`));
           const avg = e.length ? e.reduce((a,b)=>a+(parseFloat(b.value)||0),0)/e.length : 0;
           cie += (((m*0.25)+(avg*0.75))/100) * (t === 'lab' ? 60 : 25);
@@ -1291,8 +1267,7 @@
       }
 
       if(t === 'hybrid') {
-        const pSeeEl = document.getElementById('hybrid-pSee');
-        knownSee = (parseFloat(pSeeEl ? pSeeEl.value : 0)||0) * 0.15;
+        knownSee = getNum('hybrid-pSee') * 0.15;
       }
 
       document.getElementById('cie-val').innerText = Math.round(cie);
@@ -1342,6 +1317,7 @@
       let totalPts = 0;
       let totalRegisteredCredits = 0;
       let completedCoursesCount = 0;
+      let hasArrear = false;
       let totalCoursesInSem = document.querySelectorAll('.course-grade-select').length;
 
       document.querySelectorAll('.course-grade-select').forEach(selectEl => {
@@ -1350,6 +1326,8 @@
         
         if(grade !== "") {
           completedCoursesCount++;
+          if (grade === 'RA') hasArrear = true;
+          
           if (credits > 0) { // Standard credit-bearing courses
             totalRegisteredCredits += credits;
             if(grade !== 'RA' && GRADE_POINTS[grade] !== undefined) {
@@ -1371,6 +1349,12 @@
       if (completedCoursesCount === 0) {
         perfEl.innerText = "N/A";
         perfEl.style.color = "var(--text-muted)";
+      } else if (hasArrear) {
+        perfEl.innerText = "Arrear (RA)"; 
+        perfEl.style.color = "var(--danger)";
+      } else if (totalRegisteredCredits === 0) {
+        perfEl.innerText = "Completed"; 
+        perfEl.style.color = "var(--success)";
       } else {
         const s = parseFloat(sgpa);
         if (s >= 9.0) { perfEl.innerText = "Outstanding"; perfEl.style.color = "#7b59a6"; }
