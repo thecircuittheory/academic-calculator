@@ -185,10 +185,46 @@
       border-radius: 50px;
       display: inline-block;
       box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      margin-bottom: 1.5rem;
+    }
+
+    /* NEW: Mode Toggle styling */
+    .mode-toggle-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 10;
+    }
+    .mode-toggle {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.4);
+      padding: 6px;
+      border-radius: 50px;
+      border: var(--glass-border);
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .mode-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+    .mode-btn.active {
+      background: #fff;
+      color: #7b59a6;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transform: scale(1.02);
     }
 
     .actions-hub { 
-      margin: 2rem auto 0; 
+      margin: 1rem auto 0; 
       display: flex; 
       justify-content: center; 
       align-items: center; 
@@ -214,7 +250,7 @@
     .btn {
       background: var(--glass-highlight); 
       border: var(--glass-border); 
-      color: #8c6eb5; /* Darker primary for contrast */
+      color: #8c6eb5; 
       padding: 12px 28px; 
       font-size: 0.95rem; 
       font-family: inherit; 
@@ -450,6 +486,7 @@
       border: 1px solid rgba(141, 214, 165, 0.3);
     }
 
+    /* Absolute Grade Rows */
     .grade-row { 
       display: flex; 
       justify-content: space-between; 
@@ -470,37 +507,94 @@
     .status-impossible { border-color: rgba(240,137,137,0.4) !important; background: rgba(240,137,137,0.1); }
     .status-hard { border-color: rgba(247,203,119,0.4) !important; background: rgba(247,203,119,0.1); }
 
-    .grade-label { 
-      font-size: 1.6rem; 
-      font-weight: 800; 
-      color: var(--text); 
-    }
-    
-    .grade-points { 
-      font-size: 0.85rem; 
-      color: var(--text-muted); 
-      font-weight: 700; 
-      margin-top: 4px; 
-      display: block; 
-    }
-
-    .req-val { 
-      font-size: 1.6rem; 
-      font-weight: 800; 
-      display: block; 
-      text-align: right; 
-    }
-    
+    .grade-label { font-size: 1.6rem; font-weight: 800; color: var(--text); }
+    .grade-points { font-size: 0.85rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; display: block; }
+    .req-val { font-size: 1.6rem; font-weight: 800; display: block; text-align: right; }
     .txt-impossible { color: #d66565; }
     .txt-hard { color: #d19e38; }
-    
-    .combined-see { 
-      font-size: 0.75rem; 
-      color: var(--text-muted); 
-      font-weight: 700; 
-      display: block; 
-      margin-top: 4px; 
+    .combined-see { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; display: block; margin-top: 4px; }
+
+    /* NEW: Relative Grading Styles */
+    .rel-score-breakdown {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.6);
+      padding: 1.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.7);
+      margin-bottom: 1.5rem;
+      text-align: center;
     }
+    .rel-score-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .rel-score-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .rel-score-val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #7b59a6;
+    }
+    .rel-score-item.final {
+      background: linear-gradient(135deg, rgba(203, 168, 240, 0.3), rgba(205, 224, 245, 0.3));
+      padding: 10px 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(203, 168, 240, 0.4);
+    }
+    .rel-score-item.final .rel-score-val {
+      color: #4a4a5c;
+      font-size: 1.8rem;
+    }
+
+    .rel-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      margin-top: 10px;
+      border: 1px solid transparent;
+      animation: popIn 0.4s ease forwards;
+    }
+    .rel-badge.purple { background: rgba(203, 168, 240, 0.3); color: #7b59a6; border-color: rgba(203, 168, 240, 0.5); }
+    .rel-badge.green { background: rgba(141, 214, 165, 0.3); color: #438f5f; border-color: rgba(141, 214, 165, 0.5); }
+    .rel-badge.yellow { background: rgba(247, 203, 119, 0.3); color: #b5832a; border-color: rgba(247, 203, 119, 0.5); }
+    .rel-badge.gray { background: rgba(133, 133, 158, 0.2); color: var(--text-muted); border-color: rgba(133, 133, 158, 0.3); }
+
+    .rel-stat-card {
+      background: rgba(255,255,255,0.4);
+      padding: 1.2rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.5);
+      margin-bottom: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .rel-stat-text {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .rel-stat-subtext {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .rel-stat-number {
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+    .rel-stat-number.positive { color: #55996c; }
+    .rel-stat-number.negative { color: #d66565; }
 
     .sgpa-selector-btn {
       display: block;
@@ -649,7 +743,17 @@
   <div class="container">
     <header>
       <h1>Grade Pilot</h1>
-      <div class="status-text">Dr. N.G.P. Institute of Technology &bull; EEE R2022 Curriculum</div>
+      <div style="display: block;">
+        <div class="status-text">Dr. N.G.P. Institute of Technology &bull; EEE R2022 Curriculum</div>
+      </div>
+      
+      <!-- NEW: Mode Toggle Switch -->
+      <div class="mode-toggle-container" id="grading-mode-selector">
+        <div class="mode-toggle">
+          <button class="mode-btn active" data-mode="absolute">Absolute Grading</button>
+          <button class="mode-btn" data-mode="relative">Relative Grading</button>
+        </div>
+      </div>
       
       <div class="actions-hub">
         <div class="action-group">
@@ -761,6 +865,7 @@
               </div>
             </div>
           </div>
+          <!-- Wait, pSee only matters for Absolute grading... keep it always visible for simplicity, but maybe indicate it's mostly for absolute? Let's leave as is for now. -->
           <div class="panel">
             <div class="card-title">Expected Practical SEE Mark</div>
             <div class="input-field">
@@ -822,6 +927,8 @@
         
         <!-- Standard Prediction Results -->
         <div id="std-results">
+          
+          <!-- Shared Internal Mark Display -->
           <div class="card-title">Internal Score</div>
           <div style="display:flex; align-items:baseline; gap:0.75rem; margin-bottom:1rem;">
             <span class="score-big" id="cie-val">00</span>
@@ -829,9 +936,65 @@
           </div>
           <div class="regulation-tag">R2022 Clause 15.1 &bull; Minimum SEE Pass: 45%</div>
           
-          <div style="margin-top:2.5rem;">
+          <!-- ABSOLUTE GRADING VIEW -->
+          <div id="abs-grading-view" style="margin-top:2.5rem;">
             <div class="card-title">Required SEE Marks</div>
             <div id="target-list" class="custom-scroll" style="max-height: 400px; overflow-y: auto; padding-right: 5px;"></div>
+          </div>
+
+          <!-- RELATIVE GRADING VIEW -->
+          <div id="rel-grading-view" class="hidden" style="margin-top:2.5rem; animation: fadeSlideUp 0.4s ease forwards;">
+            <div class="card-title">Relative Analysis</div>
+            
+            <div class="internal-block" style="padding: 1.2rem;">
+              <div class="input-field" style="margin-bottom: 1rem;">
+                <label>Semester Exam Mark (/100)</label>
+                <input type="number" id="rel-exam-mark" placeholder="Enter out of 100" min="0" max="100">
+              </div>
+              
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">Optional Comparisons</div>
+              <div class="input-grid">
+                <div class="input-field"><label>Class Average (/100)</label><input type="number" id="rel-class-avg" placeholder="Optional" min="0" max="100"></div>
+                <div class="input-field"><label>Topper Mark (/100)</label><input type="number" id="rel-topper" placeholder="Optional" min="0" max="100"></div>
+              </div>
+            </div>
+
+            <div id="rel-outputs-container" class="hidden">
+              <div class="rel-score-breakdown">
+                <div class="rel-score-item">
+                  <span class="rel-score-label">Exam</span>
+                  <span class="rel-score-val" id="rel-out-exam">0</span>
+                </div>
+                <div class="rel-score-item">
+                  <span class="rel-score-label" id="rel-label-converted">Converted</span>
+                  <span class="rel-score-val" id="rel-out-conv">0</span>
+                </div>
+                <div class="rel-score-item">
+                  <span class="rel-score-label" id="rel-label-internal">Internal</span>
+                  <span class="rel-score-val" id="rel-out-cie">0</span>
+                </div>
+                <div class="rel-score-item final">
+                  <span class="rel-score-label">Overall</span>
+                  <span class="rel-score-val" id="rel-out-total">0</span>
+                </div>
+              </div>
+
+              <!-- Performance Text -->
+              <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Estimated Performance</div>
+                <div id="rel-perf-text" style="font-size: 1.6rem; font-weight: 800; color: var(--text); margin-top: 4px;">...</div>
+                <div id="rel-prediction-badge" class="rel-badge gray">⚪ Waiting for input</div>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px; font-style: italic;">*Actual grade strictly depends on class distribution.</p>
+              </div>
+
+              <!-- Dynamic Comparison Cards -->
+              <div id="rel-comparison-cards"></div>
+            </div>
+            
+            <div id="rel-empty-state" style="text-align: center; padding: 2rem 1rem; color: var(--text-muted); font-weight: 600;">
+              Enter your expected Semester Exam Mark above to see your relative performance estimation.
+            </div>
+
           </div>
         </div>
 
@@ -903,7 +1066,8 @@
       tab: 'theory', 
       directMode: { theory: false, hybrid: false, lab: false }, 
       expts: { hybrid: 1, lab: 1 },
-      activeSemIndex: 0 // Default to Sem I
+      activeSemIndex: 0, // Default to Sem I
+      gradingMode: 'absolute' // 'absolute' or 'relative'
     };
 
     // --- FULL CURRICULUM DATA (Extracted precisely from R2022 PDF) ---
@@ -1047,6 +1211,18 @@
         calculate();
       };
 
+      // Mode Toggle (Absolute vs Relative)
+      const modeBtns = document.querySelectorAll('.mode-btn');
+      modeBtns.forEach(btn => {
+        btn.onclick = function() {
+          modeBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          appState.gradingMode = this.getAttribute('data-mode');
+          syncUI();
+          calculate();
+        };
+      });
+
       // Clear Button
       document.getElementById('clearSection').onclick = () => {
         const t = appState.tab;
@@ -1059,6 +1235,12 @@
           const container = document.getElementById(`tab-${t}`);
           if (container) container.querySelectorAll('input').forEach(i => i.value = '');
         }
+        
+        // Also clear relative inputs
+        document.getElementById('rel-exam-mark').value = '';
+        document.getElementById('rel-class-avg').value = '';
+        document.getElementById('rel-topper').value = '';
+
         calculate();
       };
 
@@ -1066,7 +1248,8 @@
       const allInputs = [
         'theory-i1', 'theory-i1ass', 'theory-i2', 'theory-i2ass', 'theory-direct-cie', 
         'hybrid-i1', 'hybrid-i1ass', 'hybrid-i2', 'hybrid-i2ass', 'hybrid-model', 'hybrid-pSee', 'hybrid-direct-cie',
-        'lab-model', 'lab-direct-cie'
+        'lab-model', 'lab-direct-cie',
+        'rel-exam-mark', 'rel-class-avg', 'rel-topper'
       ];
       allInputs.forEach(id => {
         const el = document.getElementById(id);
@@ -1126,13 +1309,16 @@
 
       const overrideBtn = document.getElementById('toggleOverride');
       const actionsHub = document.querySelector('.actions-hub');
+      const modeSelector = document.getElementById('grading-mode-selector');
 
       if(t === 'sgpa') {
         actionsHub.classList.add('hidden');
+        modeSelector.classList.add('hidden');
         document.getElementById('std-results').classList.add('hidden');
         document.getElementById('sgpa-results').classList.remove('hidden');
       } else {
         actionsHub.classList.remove('hidden');
+        modeSelector.classList.remove('hidden');
         document.getElementById('std-results').classList.remove('hidden');
         document.getElementById('sgpa-results').classList.add('hidden');
         
@@ -1150,6 +1336,22 @@
         
         const globalMaxLabel = document.getElementById('cie-max');
         if (globalMaxLabel) globalMaxLabel.innerText = `/${CONFIG[t].cieMax}`;
+
+        // Toggle Absolute / Relative Views
+        const absView = document.getElementById('abs-grading-view');
+        const relView = document.getElementById('rel-grading-view');
+        
+        if(appState.gradingMode === 'absolute') {
+          absView.classList.remove('hidden');
+          relView.classList.add('hidden');
+        } else {
+          absView.classList.add('hidden');
+          relView.classList.remove('hidden');
+          
+          // Update labels dynamically based on tab
+          document.getElementById('rel-label-converted').innerText = `Converted (/${100 - CONFIG[t].cieMax})`;
+          document.getElementById('rel-label-internal').innerText = `Internal (/${CONFIG[t].cieMax})`;
+        }
       }
       
       if (t === 'sgpa') calcSGPA();
@@ -1188,8 +1390,7 @@
 
       // Define render order
       const order = ["Theory", "Theory + Lab", "Practical", "One Credit", "Mini Project", "Non-Credit"];
-
-      let delayIndex = 0; // For staggered animation
+      let delayIndex = 0;
 
       order.forEach(type => {
         if(groups[type] && groups[type].length > 0) {
@@ -1229,8 +1430,6 @@
               </select>
             `;
             listEl.appendChild(row);
-            
-            // Attach event listener for live calculation
             row.querySelector('select').addEventListener('change', calculate);
           });
         }
@@ -1271,7 +1470,12 @@
       }
 
       document.getElementById('cie-val').innerText = Math.round(cie);
-      renderTargets(cie, knownSee, conf);
+      
+      if(appState.gradingMode === 'absolute') {
+        renderTargets(cie, knownSee, conf);
+      } else {
+        renderRelative(cie, conf);
+      }
     }
 
     function renderTargets(cie, known, conf) {
@@ -1311,6 +1515,131 @@
         `;
         list.appendChild(row);
       });
+    }
+
+    function renderRelative(cie, conf) {
+      const examInput = document.getElementById('rel-exam-mark').value;
+      const avgInput = document.getElementById('rel-class-avg').value;
+      const topInput = document.getElementById('rel-topper').value;
+      
+      const container = document.getElementById('rel-outputs-container');
+      const emptyState = document.getElementById('rel-empty-state');
+      const compCards = document.getElementById('rel-comparison-cards');
+
+      if(examInput === '') {
+        container.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      container.classList.remove('hidden');
+      emptyState.classList.add('hidden');
+
+      const exam = parseFloat(examInput);
+      const seeMax = 100 - conf.cieMax;
+      
+      // Calculate Converted SEE
+      const converted = (exam / 100) * seeMax;
+      const total = cie + converted;
+
+      // Update Breakdown DOM
+      document.getElementById('rel-out-exam').innerHTML = `${exam.toFixed(1)} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">/100</span>`;
+      document.getElementById('rel-out-conv').innerHTML = `${converted.toFixed(1)} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">/${seeMax}</span>`;
+      document.getElementById('rel-out-cie').innerHTML = `${cie.toFixed(1)} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">/${conf.cieMax}</span>`;
+      document.getElementById('rel-out-total').innerHTML = `${total.toFixed(1)} <span style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">/100</span>`;
+
+      // Estimate Performance based on standard bands (since actual depends on relative)
+      const perfEl = document.getElementById('rel-perf-text');
+      if(total >= 90) { perfEl.innerText = "Outstanding"; perfEl.style.color = "#7b59a6"; }
+      else if(total >= 80) { perfEl.innerText = "Excellent"; perfEl.style.color = "var(--success)"; }
+      else if(total >= 70) { perfEl.innerText = "Above Average"; perfEl.style.color = "#5c9bb5"; }
+      else if(total >= 60) { perfEl.innerText = "Average"; perfEl.style.color = "#b5a75c"; }
+      else { perfEl.innerText = "Below Average"; perfEl.style.color = "var(--danger)"; }
+
+      // Handle Comparisons
+      compCards.innerHTML = '';
+      let diffAvg = null;
+      let percTop = null;
+      let hasComparisons = false;
+
+      if(avgInput !== '') {
+        hasComparisons = true;
+        const avg = parseFloat(avgInput);
+        diffAvg = total - avg;
+        const isPos = diffAvg >= 0;
+        
+        compCards.innerHTML += `
+          <div class="rel-stat-card">
+            <div>
+              <div class="rel-stat-text">Class Average Match</div>
+              <div class="rel-stat-subtext">Avg is ${avg}</div>
+            </div>
+            <div class="rel-stat-number ${isPos ? 'positive' : 'negative'}">
+              ${isPos ? '+' : ''}${diffAvg.toFixed(1)}
+            </div>
+          </div>
+        `;
+      }
+
+      if(topInput !== '') {
+        hasComparisons = true;
+        const top = parseFloat(topInput);
+        const diffTop = top - total;
+        percTop = (total / top) * 100;
+        
+        compCards.innerHTML += `
+          <div class="rel-stat-card">
+            <div>
+              <div class="rel-stat-text">Topper Comparison</div>
+              <div class="rel-stat-subtext">Topper is ${top}</div>
+            </div>
+            <div class="rel-stat-number ${percTop >= 90 ? 'positive' : ''}" style="color: ${percTop >= 90 ? '#7b59a6' : 'var(--text)'};">
+              ${percTop.toFixed(1)}%
+            </div>
+          </div>
+        `;
+      }
+
+      // Dynamic Prediction Badge
+      const badgeEl = document.getElementById('rel-prediction-badge');
+      badgeEl.className = 'rel-badge'; // reset
+      
+      if(total < 50) {
+        badgeEl.classList.add('gray');
+        badgeEl.style.color = 'var(--danger)';
+        badgeEl.innerHTML = '🔴 High risk of Arrear';
+      }
+      else if (hasComparisons) {
+        if((percTop !== null && percTop >= 95) || (diffAvg !== null && diffAvg >= 15)) {
+          badgeEl.classList.add('purple');
+          badgeEl.innerHTML = '🟣 Strong chance of O';
+        } 
+        else if((percTop !== null && percTop >= 85) || (diffAvg !== null && diffAvg >= 10)) {
+          badgeEl.classList.add('green');
+          badgeEl.innerHTML = '🟢 Strong chance of A+';
+        }
+        else if((percTop !== null && percTop >= 75) || (diffAvg !== null && diffAvg >= 5)) {
+          badgeEl.classList.add('yellow');
+          badgeEl.innerHTML = '🟡 Competitive for A';
+        }
+        else {
+          badgeEl.classList.add('gray');
+          badgeEl.innerHTML = '⚪ Depends on distribution';
+        }
+      } 
+      else {
+        // Without comparisons, give a very generic guess based on absolute total
+        if(total >= 85) {
+          badgeEl.classList.add('green');
+          badgeEl.innerHTML = '🟢 Solid Top Tier';
+        } else if(total >= 70) {
+          badgeEl.classList.add('yellow');
+          badgeEl.innerHTML = '🟡 Competitive';
+        } else {
+          badgeEl.classList.add('gray');
+          badgeEl.innerHTML = '⚪ Depends on distribution';
+        }
+      }
     }
 
     function calcSGPA() {
